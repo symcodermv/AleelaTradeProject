@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aleela Trade </title>
+    <title>Aleela Trade</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -11,23 +11,30 @@
     <style>
         /* ===== 2026 MODERN DESIGN SYSTEM ===== */
         :root {
-            --primary: #f02f24;
-            --primary-dark: #15161b;
-            --secondary: #0ea5e9;
-            --accent: #8b5cf6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --dark: #1f2937;
-            --light: #f8fafc;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
+            --primary: #2ecc71;
+            --primary-dark: #27ae60;
+            --secondary: #3498db;
+            --accent: #9b59b6;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --fresh: #2ecc71;
+            --organic: #27ae60;
+            --fruit: #e74c3c;
+            --vegetable: #27ae60;
+            --dairy: #3498db;
+            --meat: #e74c3c;
+            --bakery: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
             --radius-sm: 0.5rem;
             --radius-md: 0.75rem;
             --radius-lg: 1rem;
@@ -91,7 +98,6 @@
             margin-bottom: 2rem;
         }
 
-        /* Company Logo Container */
         .company-logo {
             position: absolute;
             top: 50%;
@@ -105,7 +111,6 @@
             z-index: 2;
         }
 
-        /* Company Logo Image */
         .company-logo-img {
             width: 100%;
             height: 100%;
@@ -235,19 +240,19 @@
             text-decoration: none;
         }
 
-        /* Header Logo Container */
         .brand-logo {
             width: 45px;
             height: 45px;
-            background: transparent;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            color: white;
+            font-size: 1.25rem;
         }
 
-        /* Header Logo Image */
         .brand-logo-img {
             width: 100%;
             height: 100%;
@@ -257,7 +262,7 @@
         .brand-text {
             font-size: 1.25rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -289,7 +294,7 @@
         .search-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(240, 47, 36, 0.1);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
             background: white;
         }
 
@@ -440,7 +445,7 @@
             top: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
             transform: translateX(-100%);
             transition: transform 0.3s ease;
         }
@@ -459,7 +464,7 @@
         }
 
         .category-btn.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
             color: white;
         }
 
@@ -492,7 +497,7 @@
             bottom: 0;
             width: 100%;
             height: 2px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
             transform: translateX(-100%);
             transition: transform 0.3s ease;
         }
@@ -528,21 +533,8 @@
         }
 
         .nav-link.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
             color: white;
-        }
-
-        /* Chevron animation */
-        .category-btn i {
-            transition: transform 0.3s ease;
-        }
-
-        .category-btn:hover i {
-            transform: translateX(4px);
-        }
-
-        .category-btn.active i {
-            transform: translateX(4px);
         }
 
         /* Sidebar overlay effect */
@@ -580,7 +572,7 @@
         .page-header h1 {
             font-size: 1.875rem;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -593,18 +585,24 @@
             font-size: 1rem;
         }
 
-        /* Product Grid - Mobile Optimized */
+        /* Product Grid - 2 Products Per Row on Mobile */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.25rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
             margin: 2rem 0;
         }
 
-        @media (max-width: 640px) {
+        @media (min-width: 768px) {
             .products-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                gap: 0.75rem;
             }
         }
 
@@ -628,7 +626,7 @@
             position: absolute;
             top: 1rem;
             left: 1rem;
-            background: linear-gradient(135deg, var(--danger) 0%, #f97316 100%);
+            background: linear-gradient(135deg, var(--fresh) 0%, var(--organic) 100%);
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: var(--radius-sm);
@@ -639,10 +637,16 @@
 
         .product-image {
             width: 100%;
-            height: 200px;
+            height: 160px;
             overflow: hidden;
             background: var(--gray-100);
             position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .product-image {
+                height: 200px;
+            }
         }
 
         .product-image img {
@@ -657,85 +661,196 @@
         }
 
         .product-content {
-            padding: 1.25rem;
+            padding: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .product-content {
+                padding: 1.25rem;
+            }
         }
 
         .product-title {
-            font-size: 1.125rem;
+            font-size: 0.875rem;
             font-weight: 600;
             color: var(--dark);
             margin-bottom: 0.5rem;
-            line-height: 1.4;
+            line-height: 1.3;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .product-title {
+                font-size: 1.125rem;
+            }
         }
 
         .product-description {
             color: var(--gray-500);
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            margin-bottom: 0.75rem;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .product-description {
+                font-size: 0.875rem;
+                margin-bottom: 1rem;
+            }
         }
 
         .product-price {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .current-price {
-            font-size: 1.5rem;
+            font-size: 1.125rem;
             font-weight: 700;
             color: var(--primary);
         }
 
-        .original-price {
-            font-size: 1rem;
-            color: var(--gray-400);
-            text-decoration: line-through;
+        @media (min-width: 768px) {
+            .current-price {
+                font-size: 1.5rem;
+            }
         }
 
-        .currency {
+        .original-price {
             font-size: 0.875rem;
-            color: var(--gray-500);
-            margin-left: 2px;
+            color: var(--gray-400);
+            text-decoration: line-through;
         }
 
         .stock-status {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.375rem 0.75rem;
+            padding: 0.25rem 0.5rem;
             border-radius: var(--radius-md);
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 500;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .stock-status {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+                margin-bottom: 1rem;
+            }
         }
 
         .stock-in {
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(46, 204, 113, 0.1);
             color: var(--success);
         }
 
         .stock-low {
-            background: rgba(245, 158, 11, 0.1);
+            background: rgba(243, 156, 18, 0.1);
             color: var(--warning);
         }
 
         .stock-out {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(231, 76, 60, 0.1);
             color: var(--danger);
         }
 
         .product-actions {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .product-actions {
+                gap: 0.75rem;
+            }
+        }
+
+        /* ===== IMAGE SLIDER ===== */
+        .slider-container {
+            width: 100%;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 250px;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .slide {
+                height: 400px;
+            }
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .slide-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .slide-content h2 {
+                font-size: 2rem;
+            }
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            padding: 0;
+        }
+
+        .slider-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
         }
 
         /* ===== PRODUCT DETAILS MODAL ===== */
@@ -861,6 +976,182 @@
             margin-top: 2rem;
         }
 
+        /* ===== BANK TRANSFER MODAL ===== */
+        .bank-transfer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1002;
+            overflow-y: auto;
+        }
+
+        .bank-transfer-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bank-transfer-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 95%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            margin: 1rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .bank-details {
+            padding: 2rem;
+        }
+
+        .bank-details-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .bank-info {
+            background: var(--gray-100);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .bank-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .bank-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .bank-label {
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .bank-value {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--danger);
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+        }
+
+        .upload-receipt {
+            margin-top: 2rem;
+        }
+
+        .upload-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            margin-bottom: 1rem;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(46, 204, 113, 0.02);
+        }
+
+        .upload-area i {
+            font-size: 2rem;
+            color: var(--gray-400);
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-area small {
+            color: var(--gray-400);
+        }
+
+        .file-preview {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            background: var(--gray-100);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-top: 1rem;
+        }
+
+        .file-preview i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .file-size {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .remove-file {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
         /* ===== BUTTONS - 2026 STYLE ===== */
         .btn {
             display: inline-flex;
@@ -898,7 +1189,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
             color: white;
             flex: 1;
         }
@@ -939,7 +1230,7 @@
         }
 
         .btn-danger:hover {
-            background: #dc2626;
+            background: #c0392b;
             transform: translateY(-2px);
         }
 
@@ -1090,7 +1381,7 @@
         }
 
         .remove-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(231, 76, 60, 0.1);
         }
 
         /* Order Summary */
@@ -1224,7 +1515,7 @@
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(240, 47, 36, 0.1);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
         }
 
         .payment-methods {
@@ -1247,12 +1538,12 @@
 
         .payment-method:hover {
             border-color: var(--primary);
-            background: rgba(240, 47, 36, 0.02);
+            background: rgba(46, 204, 113, 0.02);
         }
 
         .payment-method.selected {
             border-color: var(--primary);
-            background: rgba(240, 47, 36, 0.05);
+            background: rgba(46, 204, 113, 0.05);
         }
 
         .payment-icon {
@@ -1360,6 +1651,37 @@
             font-size: 0.875rem;
         }
 
+        /* Category specific styles */
+        .category-fruit {
+            background: rgba(231, 76, 60, 0.1) !important;
+            border-left: 4px solid var(--fruit) !important;
+        }
+
+        .category-vegetable {
+            background: rgba(39, 174, 96, 0.1) !important;
+            border-left: 4px solid var(--vegetable) !important;
+        }
+
+        .category-dairy {
+            background: rgba(52, 152, 219, 0.1) !important;
+            border-left: 4px solid var(--dairy) !important;
+        }
+
+        .category-meat {
+            background: rgba(231, 76, 60, 0.1) !important;
+            border-left: 4px solid var(--meat) !important;
+        }
+
+        .category-bakery {
+            background: rgba(243, 156, 18, 0.1) !important;
+            border-left: 4px solid var(--bakery) !important;
+        }
+
+        .category-beverages {
+            background: rgba(155, 89, 182, 0.1) !important;
+            border-left: 4px solid var(--accent) !important;
+        }
+
         /* ===== UTILITIES ===== */
         .hidden {
             display: none !important;
@@ -1389,11 +1711,6 @@
     <div class="loading-screen" id="loadingScreen">
         <div class="logo-animation">
             <div class="company-logo">
-                <!-- REPLACE THIS WITH YOUR COMPANY LOGO IMAGE -->
-                <img src="Aleela-removebg-preview.png" alt="Sonee Hardware Logo" class="company-logo-img">
-                <!-- ACTUAL LOGO URL EXAMPLE: 
-                     <img src="images/sonee-logo.png" alt="Sonee Hardware Logo" class="company-logo-img">
-                -->
             </div>
             <div class="line-animation">
                 <div class="line line-1"></div>
@@ -1419,6 +1736,71 @@
         </div>
     </div>
 
+    <!-- Bank Transfer Modal -->
+    <div class="bank-transfer-modal" id="bankTransferModal">
+        <div class="bank-transfer-content">
+            <button class="modal-close" id="bankModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="bank-details">
+                <h2 class="bank-details-title">Bank Transfer Details</h2>
+                
+                <div class="bank-info">
+                    <div class="bank-info-item">
+                        <span class="bank-label">Account Name:</span>
+                        <span class="bank-value">Aleela Trade</span>
+                    </div>
+                    <div class="bank-info-item">
+                        <span class="bank-label">Account Number:</span>
+                        <span class="bank-value">
+                            <span id="accountNumber">7712440335001</span>
+                            <button class="copy-btn" id="copyAccountBtn">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </span>
+                    </div>
+                    <div class="bank-info-item">
+                        <span class="bank-label">Bank Name:</span>
+                        <span class="bank-value">Bank of Maldives</span>
+                    </div>
+                   
+                </div>
+                
+                <div class="upload-receipt">
+                    <label class="upload-label">Upload Payment Receipt</label>
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload receipt</p>
+                        <small>JPG, PNG or PDF (Max 5MB)</small>
+                        <input type="file" id="receiptFile" accept=".jpg,.jpeg,.png,.pdf" hidden>
+                    </div>
+                    
+                    <div class="file-preview" id="filePreview">
+                        <i class="fas fa-file-invoice"></i>
+                        <div class="file-info">
+                            <div class="file-name" id="fileName"></div>
+                            <div class="file-size" id="fileSize"></div>
+                        </div>
+                        <button class="remove-file" id="removeFile">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-primary" id="confirmPaymentBtn">
+                        <i class="fas fa-check"></i>
+                        Confirm Payment
+                    </button>
+                    <button class="btn btn-outline" id="cancelPaymentBtn">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -1434,11 +1816,7 @@
                 
                 <a href="#" class="brand" data-page="home">
                     <div class="brand-logo">
-                        <!-- REPLACE THIS WITH YOUR COMPANY LOGO IMAGE -->
-                        <img src="Aleela-removebg-preview.png" alt="Sonee Hardware Logo" class="brand-logo-img">
-                        <!-- ACTUAL LOGO URL EXAMPLE: 
-                             <img src="images/sonee-icon.png" alt="Sonee Hardware Logo" class="brand-logo-img">
-                        -->
+                        <i class="fas fa-shopping-basket"></i>
                     </div>
                     <div class="brand-text">Aleela Trade</div>
                 </a>
@@ -1456,7 +1834,7 @@
             
             <!-- Mobile Search -->
             <div class="search-container" id="searchContainer">
-                <input type="text" class="search-input" placeholder="Search products..." id="searchInput">
+                <input type="text" class="search-input" placeholder="Search groceries..." id="searchInput">
                 <i class="fas fa-search search-icon"></i>
             </div>
         </div>
@@ -1468,24 +1846,28 @@
                     <span>All Products</span>
                     <i class="fas fa-chevron-right"></i>
                 </button>
-                <button class="category-btn" data-category="tools">
-                    <span>Power Tools</span>
+                <button class="category-btn" data-category="fruits">
+                    <span>Fresh Fruits</span>
                     <i class="fas fa-chevron-right"></i>
                 </button>
-                <button class="category-btn" data-category="hardware">
-                    <span>Hardware</span>
+                <button class="category-btn" data-category="vegetables">
+                    <span>Fresh Vegetables</span>
                     <i class="fas fa-chevron-right"></i>
                 </button>
-                <button class="category-btn" data-category="paint">
-                    <span>Paint & Supplies</span>
+                <button class="category-btn" data-category="dairy">
+                    <span>Dairy & Eggs</span>
                     <i class="fas fa-chevron-right"></i>
                 </button>
-                <button class="category-btn" data-category="bathroom">
-                    <span>Bathroom</span>
+                <button class="category-btn" data-category="meat">
+                    <span>Meat & Poultry</span>
                     <i class="fas fa-chevron-right"></i>
                 </button>
-                <button class="category-btn" data-category="kitchen">
-                    <span>Kitchen</span>
+                <button class="category-btn" data-category="bakery">
+                    <span>Bakery</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="category-btn" data-category="beverages">
+                    <span>Beverages</span>
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
@@ -1501,7 +1883,11 @@
                 </a>
                 <a href="#" class="nav-link" data-page="sale">
                     <i class="fas fa-tag"></i>
-                    <span>Special Offers</span>
+                    <span>Weekly Specials</span>
+                </a>
+                <a href="#" class="nav-link" data-page="recipes">
+                    <i class="fas fa-utensils"></i>
+                    <span>Recipes</span>
                 </a>
                 <a href="#" class="nav-link" data-page="account">
                     <i class="fas fa-user"></i>
@@ -1539,7 +1925,7 @@
                     <ul class="footer-links">
                         <li><a href="#">Contact Us</a></li>
                         <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Delivery Info</a></li>
                         <li><a href="#">Returns & Refunds</a></li>
                     </ul>
                 </div>
@@ -1547,9 +1933,10 @@
                 <div class="footer-section">
                     <h3>Contact Info</h3>
                     <ul class="footer-links">
-                        <li>181, Boduthakurufaanu Magu, Male'</li>
+                        <li>Aleela Trade, Male' City</li>
                         <li>+960 333 6699</li>
                         <li>info@aleelatrade.com.mv</li>
+                        <li>Open Daily: 7:00 AM - 11:00 PM</li>
                     </ul>
                     <div class="social-links">
                         <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
@@ -1593,12 +1980,33 @@
             products: [],
             categories: [
                 { id: 'all', name: 'All Products', icon: 'fas fa-boxes' },
-                { id: 'tools', name: 'Power Tools', icon: 'fas fa-tools' },
-                { id: 'hardware', name: 'Hardware', icon: 'fas fa-wrench' },
-                { id: 'paint', name: 'Paint & Supplies', icon: 'fas fa-paint-roller' },
-                { id: 'bathroom', name: 'Bathroom', icon: 'fas fa-bath' },
-                { id: 'kitchen', name: 'Kitchen', icon: 'fas fa-utensils' }
-            ]
+                { id: 'fruits', name: 'Fresh Fruits', icon: 'fas fa-apple-alt' },
+                { id: 'vegetables', name: 'Vegetables', icon: 'fas fa-carrot' },
+                { id: 'dairy', name: 'Dairy & Eggs', icon: 'fas fa-egg' },
+                { id: 'meat', name: 'Meat & Poultry', icon: 'fas fa-drumstick-bite' },
+                { id: 'bakery', name: 'Bakery', icon: 'fas fa-bread-slice' },
+                { id: 'beverages', name: 'Beverages', icon: 'fas fa-wine-bottle' },
+                { id: 'snacks', name: 'Snacks', icon: 'fas fa-cookie' },
+                { id: 'frozen', name: 'Frozen Foods', icon: 'fas fa-snowflake' }
+            ],
+            sliderImages: [
+                {
+                    image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&fit=crop',
+                    title: 'Fresh Produce Daily',
+                    description: 'Farm-fresh fruits and vegetables'
+                },
+                {
+                    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&fit=crop',
+                    title: 'Weekly Specials',
+                    description: 'Up to 30% off on selected items'
+                },
+                {
+                    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&fit=crop',
+                    title: 'Organic Selection',
+                    description: 'Healthy organic options available'
+                }
+            ],
+            currentSlide: 0
         };
 
         // ===== DOM ELEMENTS =====
@@ -1616,13 +2024,17 @@
         const productModal = document.getElementById('productModal');
         const modalClose = document.getElementById('modalClose');
         const modalContent = document.getElementById('modalContent');
-
-        // ===== LOGO IMAGE URLs =====
-        // REPLACE THESE WITH YOUR ACTUAL LOGO IMAGE URLs
-        const LOGO_URLS = {
-            loadingLogo: 'Aleela-removebg-preview.png', // Replace with actual loading logo
-            headerLogo: 'Aleela-removebg-preview.png' // Replace with actual header logo
-        };
+        const bankTransferModal = document.getElementById('bankTransferModal');
+        const bankModalClose = document.getElementById('bankModalClose');
+        const copyAccountBtn = document.getElementById('copyAccountBtn');
+        const uploadArea = document.getElementById('uploadArea');
+        const receiptFile = document.getElementById('receiptFile');
+        const filePreview = document.getElementById('filePreview');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const removeFile = document.getElementById('removeFile');
+        const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+        const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
 
         // ===== CURRENCY FORMATTER =====
         function formatCurrency(amount) {
@@ -1637,9 +2049,6 @@
             // Set current year
             currentYear.textContent = new Date().getFullYear();
             
-            // Load logos
-            loadLogos();
-            
             // Initialize event listeners
             setupEventListeners();
             
@@ -1648,22 +2057,6 @@
                 loadingScreen.classList.add('hidden');
                 loadProducts();
             }, 2000);
-        }
-
-        function loadLogos() {
-            // Update loading screen logo
-            const loadingLogo = document.querySelector('.company-logo-img');
-            if (loadingLogo) {
-                loadingLogo.src = LOGO_URLS.loadingLogo;
-                loadingLogo.alt = 'Sonee Hardware Logo';
-            }
-            
-            // Update header logo
-            const headerLogo = document.querySelector('.brand-logo-img');
-            if (headerLogo) {
-                headerLogo.src = LOGO_URLS.headerLogo;
-                headerLogo.alt = 'Sonee Hardware Logo';
-            }
         }
 
         function setupEventListeners() {
@@ -1730,19 +2123,79 @@
                 productModal.classList.remove('active');
             });
             
-            // Close modal when clicking outside
+            // Bank modal close
+            bankModalClose.addEventListener('click', () => {
+                bankTransferModal.classList.remove('active');
+            });
+            
+            cancelPaymentBtn.addEventListener('click', () => {
+                bankTransferModal.classList.remove('active');
+            });
+            
+            // Close modals when clicking outside
             productModal.addEventListener('click', (e) => {
                 if (e.target === productModal) {
                     productModal.classList.remove('active');
                 }
             });
             
-            // Close modal with Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && productModal.classList.contains('active')) {
-                    productModal.classList.remove('active');
+            bankTransferModal.addEventListener('click', (e) => {
+                if (e.target === bankTransferModal) {
+                    bankTransferModal.classList.remove('active');
                 }
             });
+            
+            // Close modals with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    productModal.classList.remove('active');
+                    bankTransferModal.classList.remove('active');
+                }
+            });
+            
+            // Copy account number
+            copyAccountBtn.addEventListener('click', copyAccountNumber);
+            
+            // File upload
+            uploadArea.addEventListener('click', () => {
+                receiptFile.click();
+            });
+            
+            receiptFile.addEventListener('change', handleFileUpload);
+            
+            removeFile.addEventListener('click', () => {
+                receiptFile.value = '';
+                filePreview.style.display = 'none';
+                uploadArea.style.display = 'block';
+            });
+            
+            // Confirm payment
+            confirmPaymentBtn.addEventListener('click', confirmPayment);
+        }
+
+        // ===== SLIDER FUNCTIONS =====
+        function renderImageSlider() {
+            return `
+                <div class="slider-container">
+                    <div class="slider" id="imageSlider">
+                        ${state.sliderImages.map((slide, index) => `
+                            <div class="slide">
+                                <img src="${slide.image}" alt="${slide.title}">
+                                <div class="slide-content">
+                                    <h2>${slide.title}</h2>
+                                    <p>${slide.description}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="slider-dots" id="sliderDots">
+                        ${state.sliderImages.map((_, index) => `
+                            <button class="slider-dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         }
 
         // ===== SIDEBAR ANIMATION FUNCTIONS =====
@@ -1852,147 +2305,195 @@
         function addSampleProducts() {
             const sampleProducts = [
                 {
-                    name: 'Professional Cordless Drill Kit',
-                    price: 299.99,
-                    original_price: 399.99,
-                    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&fit=crop',
-                    description: 'Heavy-duty cordless drill with lithium-ion battery and complete accessory set. Perfect for professional contractors and DIY enthusiasts.',
-                    category: 'tools',
-                    featured: true,
-                    stock: 25,
-                    specifications: {
-                        'Brand': 'Makita',
-                        'Power Source': 'Battery',
-                        'Voltage': '18V',
-                        'Battery Type': 'Li-ion',
-                        'Chuck Size': '13mm',
-                        'Weight': '2.5kg'
-                    }
-                },
-                {
-                    name: 'High-Pressure Power Washer',
-                    price: 499.99,
-                    original_price: 599.99,
-                    image: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=400&fit=crop',
-                    description: 'Commercial grade pressure washer for heavy duty cleaning tasks. Features adjustable pressure settings and multiple nozzle attachments.',
-                    category: 'tools',
-                    featured: true,
-                    stock: 15,
-                    specifications: {
-                        'Brand': 'Karcher',
-                        'Power': '2200 PSI',
-                        'Flow Rate': '2.3 GPM',
-                        'Motor': '1800W',
-                        'Hose Length': '20 feet',
-                        'Weight': '18kg'
-                    }
-                },
-                {
-                    name: 'Smart Thermostatic Shower System',
-                    price: 399.99,
-                    original_price: 499.99,
-                    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&fit=crop',
-                    description: 'Digital thermostatic control with rainfall shower head. Maintains perfect water temperature with precision control.',
-                    category: 'bathroom',
-                    featured: true,
-                    stock: 30,
-                    specifications: {
-                        'Brand': 'Grohe',
-                        'Material': 'Brass',
-                        'Finish': 'Chrome',
-                        'Temperature Control': 'Thermostatic',
-                        'Warranty': '5 years',
-                        'Installation': 'Wall-mounted'
-                    }
-                },
-                {
-                    name: 'Premium Interior Paint Set',
-                    price: 89.99,
-                    original_price: 119.99,
-                    image: 'https://images.unsplash.com/photo-1568495248636-6432b97bd949?w=400&fit=crop',
-                    description: 'Washable matte finish paint with mold resistance. Suitable for living rooms, bedrooms, and hallways.',
-                    category: 'paint',
+                    name: 'Fresh Apples - 1kg',
+                    price: 45.99,
+                    original_price: 49.99,
+                    image: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=300&fit=crop',
+                    description: 'Fresh imported red apples, sweet and crisp.',
+                    category: 'fruits',
                     featured: true,
                     stock: 50,
                     specifications: {
-                        'Brand': 'Dulux',
-                        'Color': 'Pure White',
-                        'Finish': 'Matte',
-                        'Coverage': '12㎡/L',
-                        'Drying Time': '2 hours',
-                        'Recoat Time': '4 hours'
+                        'Type': 'Red Delicious',
+                        'Origin': 'New Zealand',
+                        'Weight': '1kg',
+                        'Storage': 'Refrigerate'
                     }
                 },
                 {
-                    name: 'Professional Kitchen Tool Set',
-                    price: 149.99,
-                    original_price: 199.99,
-                    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&fit=crop',
-                    description: 'Complete kitchen tool collection with ergonomic handles. Includes 15 essential tools for professional cooking.',
-                    category: 'kitchen',
+                    name: 'Organic Bananas - Bunch',
+                    price: 25.99,
+                    original_price: 29.99,
+                    image: 'https://images.unsplash.com/photo-1603833665858-e61d17a86224?w=400&h=300&fit=crop',
+                    description: 'Organic ripe bananas, perfect for smoothies.',
+                    category: 'fruits',
+                    featured: true,
+                    stock: 100,
+                    specifications: {
+                        'Type': 'Cavendish',
+                        'Origin': 'Philippines',
+                        'Certification': 'Organic',
+                        'Ripeness': 'Ready to eat'
+                    }
+                },
+                {
+                    name: 'Fresh Milk - 1L',
+                    price: 35.99,
+                    original_price: 39.99,
+                    image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=300&fit=crop',
+                    description: 'Fresh whole milk, pasteurized and homogenized.',
+                    category: 'dairy',
+                    featured: true,
+                    stock: 75,
+                    specifications: {
+                        'Brand': 'Farm Fresh',
+                        'Type': 'Whole Milk',
+                        'Volume': '1 Liter',
+                        'Fat Content': '3.5%'
+                    }
+                },
+                {
+                    name: 'Fresh Eggs - 12 Pieces',
+                    price: 28.99,
+                    original_price: 32.99,
+                    image: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400&h=300&fit=crop',
+                    description: 'Farm fresh eggs, large size.',
+                    category: 'dairy',
+                    featured: true,
+                    stock: 200,
+                    specifications: {
+                        'Size': 'Large',
+                        'Quantity': '12 pieces',
+                        'Type': 'Grade A',
+                        'Farm': 'Free-range'
+                    }
+                },
+                {
+                    name: 'Fresh Chicken Breast - 500g',
+                    price: 65.99,
+                    original_price: 69.99,
+                    image: 'https://images.unsplash.com/photo-1604503468504-60c6f7eaa6d0?w=400&h=300&fit=crop',
+                    description: 'Boneless chicken breast, skinless and fresh.',
+                    category: 'meat',
                     featured: true,
                     stock: 40,
                     specifications: {
-                        'Brand': 'Wusthof',
-                        'Material': 'Stainless Steel',
-                        'Handle': 'Ergonomic',
-                        'Pieces': '15',
-                        'Storage': 'Wooden Block',
-                        'Warranty': 'Lifetime'
+                        'Cut': 'Breast',
+                        'Weight': '500g',
+                        'Preparation': 'Boneless, Skinless',
+                        'Origin': 'Local'
                     }
                 },
                 {
-                    name: 'Modern Toilet Suite',
-                    price: 799.99,
-                    original_price: 999.99,
-                    image: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=400&fit=crop',
-                    description: 'Water-efficient toilet with soft-close seat and bidet function. Modern design with efficient flushing system.',
-                    category: 'bathroom',
+                    name: 'Fresh Bread - White Loaf',
+                    price: 18.99,
+                    original_price: 22.99,
+                    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop',
+                    description: 'Freshly baked white bread, soft and delicious.',
+                    category: 'bakery',
                     featured: false,
-                    stock: 10,
+                    stock: 60,
                     specifications: {
-                        'Brand': 'TOTO',
-                        'Flush Type': 'Dual Flush',
-                        'Water Usage': '4.8/3.0 LPF',
-                        'Material': 'Ceramic',
-                        'Seat': 'Soft-close',
-                        'Bidet': 'Yes'
+                        'Type': 'White Bread',
+                        'Weight': '400g',
+                        'Baked': 'Daily',
+                        'Ingredients': 'Wheat flour, yeast, water, salt'
                     }
                 },
                 {
-                    name: 'Smart Switch & Socket Combo',
-                    price: 29.99,
-                    original_price: 39.99,
-                    image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&fit=crop',
-                    description: 'Touch control switches with USB charging ports. Compatible with smart home systems.',
-                    category: 'hardware',
+                    name: 'Fresh Tomatoes - 1kg',
+                    price: 32.99,
+                    original_price: 36.99,
+                    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&h=300&fit=crop',
+                    description: 'Fresh ripe tomatoes, perfect for salads and cooking.',
+                    category: 'vegetables',
                     featured: false,
-                    stock: 100,
+                    stock: 150,
                     specifications: {
-                        'Brand': 'Legrand',
-                        'Type': 'Touch Switch',
-                        'USB Ports': '2',
-                        'Voltage': '220-240V',
-                        'Color': 'White',
-                        'Smart Home': 'WiFi Enabled'
+                        'Variety': 'Roma',
+                        'Weight': '1kg',
+                        'Origin': 'Local farms',
+                        'Quality': 'Grade A'
                     }
                 },
                 {
-                    name: 'Smart LED Bulb Pack',
-                    price: 19.99,
-                    original_price: 29.99,
-                    image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&fit=crop',
-                    description: 'WiFi enabled color changing LED bulbs (4-pack). Control with smartphone app or voice commands.',
-                    category: 'hardware',
+                    name: 'Fresh Potatoes - 2kg',
+                    price: 42.99,
+                    original_price: 46.99,
+                    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop',
+                    description: 'Fresh potatoes, great for boiling, baking or frying.',
+                    category: 'vegetables',
                     featured: false,
-                    stock: 200,
+                    stock: 120,
                     specifications: {
-                        'Brand': 'Philips Hue',
-                        'Wattage': '9W',
-                        'Lumens': '800',
-                        'Color Temperature': '2000K-6500K',
-                        'Smart Features': 'App Control',
-                        'Compatibility': 'Alexa, Google Home'
+                        'Variety': 'Russet',
+                        'Weight': '2kg',
+                        'Origin': 'Local farms',
+                        'Best for': 'Boiling, baking, frying'
+                    }
+                },
+                {
+                    name: 'Fresh Orange Juice - 1L',
+                    price: 55.99,
+                    original_price: 59.99,
+                    image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop',
+                    description: '100% pure orange juice, no added sugar.',
+                    category: 'beverages',
+                    featured: false,
+                    stock: 80,
+                    specifications: {
+                        'Brand': 'Tropicana',
+                        'Volume': '1 Liter',
+                        'Ingredients': '100% Orange Juice',
+                        'No Added': 'Sugar, preservatives'
+                    }
+                },
+                {
+                    name: 'Fresh Salmon Fillet - 300g',
+                    price: 125.99,
+                    original_price: 139.99,
+                    image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=300&fit=crop',
+                    description: 'Fresh salmon fillet, skin-on, perfect for grilling.',
+                    category: 'meat',
+                    featured: true,
+                    stock: 25,
+                    specifications: {
+                        'Type': 'Atlantic Salmon',
+                        'Weight': '300g',
+                        'Preparation': 'Fillet, skin-on',
+                        'Origin': 'Norway'
+                    }
+                },
+                {
+                    name: 'Fresh Yogurt - 500g',
+                    price: 28.99,
+                    original_price: 32.99,
+                    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop',
+                    description: 'Natural yogurt, creamy and probiotic.',
+                    category: 'dairy',
+                    featured: false,
+                    stock: 90,
+                    specifications: {
+                        'Brand': 'Dannon',
+                        'Type': 'Natural Yogurt',
+                        'Weight': '500g',
+                        'Fat Content': '2%'
+                    }
+                },
+                {
+                    name: 'Fresh Strawberries - 250g',
+                    price: 65.99,
+                    original_price: 69.99,
+                    image: 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=400&h=300&fit=crop',
+                    description: 'Sweet fresh strawberries, perfect for desserts.',
+                    category: 'fruits',
+                    featured: true,
+                    stock: 35,
+                    specifications: {
+                        'Variety': 'Sweet Charlie',
+                        'Weight': '250g',
+                        'Origin': 'California',
+                        'Season': 'Peak season'
                     }
                 }
             ];
@@ -2032,7 +2533,7 @@
                     
                     ${product.specifications ? `
                         <div class="modal-specs">
-                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: var(--dark);">Specifications</h3>
+                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: var(--dark);">Product Details</h3>
                             ${Object.entries(product.specifications).map(([key, value]) => `
                                 <div class="spec-item">
                                     <span class="spec-label">${key}</span>
@@ -2058,6 +2559,113 @@
             productModal.classList.add('active');
         }
 
+        // ===== BANK TRANSFER FUNCTIONS =====
+        function showBankTransferModal() {
+            // Reset file upload
+            receiptFile.value = '';
+            filePreview.style.display = 'none';
+            uploadArea.style.display = 'block';
+            
+            // Reset copy button
+            copyAccountBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            copyAccountBtn.classList.remove('copied');
+            
+            // Show modal
+            bankTransferModal.classList.add('active');
+        }
+
+        function copyAccountNumber() {
+            const accountNumber = document.getElementById('accountNumber').textContent;
+            
+            navigator.clipboard.writeText(accountNumber)
+                .then(() => {
+                    copyAccountBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    copyAccountBtn.classList.add('copied');
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        copyAccountBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                        copyAccountBtn.classList.remove('copied');
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy account number. Please copy manually.');
+                });
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Validate file size (5MB max)
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            if (file.size > maxSize) {
+                alert('File size exceeds 5MB limit. Please choose a smaller file.');
+                receiptFile.value = '';
+                return;
+            }
+            
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+            if (!validTypes.includes(file.type)) {
+                alert('Invalid file type. Please upload JPG, PNG, or PDF files only.');
+                receiptFile.value = '';
+                return;
+            }
+            
+            // Display file info
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            filePreview.style.display = 'flex';
+            uploadArea.style.display = 'none';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function confirmPayment() {
+            if (!receiptFile.files[0]) {
+                alert('Please upload your payment receipt before confirming.');
+                return;
+            }
+            
+            // Here you would typically upload the file to a server
+            // For now, we'll just simulate a successful upload
+            showNotification('Payment confirmed! Receipt uploaded successfully.');
+            bankTransferModal.classList.remove('active');
+            
+            // Continue with order placement
+            if (state.pendingOrder) {
+                placeOrderWithBankTransfer();
+            }
+        }
+
+        function placeOrderWithBankTransfer() {
+            // Your order placement logic here
+            const order = state.pendingOrder;
+            
+            database.ref('orders').push(order)
+                .then((ref) => {
+                    // Clear cart
+                    state.cart = {};
+                    localStorage.removeItem('cart');
+                    updateCartCount();
+                    
+                    // Redirect to confirmation
+                    state.orderDetails = { ...order, id: ref.key };
+                    loadPage('order-confirmation');
+                })
+                .catch((error) => {
+                    alert('Error placing order: ' + error.message);
+                });
+        }
+
         // ===== PAGE MANAGEMENT =====
         function loadPage(page) {
             state.currentPage = page;
@@ -2081,6 +2689,9 @@
                 case 'sale':
                     renderSalePage();
                     break;
+                case 'recipes':
+                    renderRecipesPage();
+                    break;
                 case 'account':
                     renderAccountPage();
                     break;
@@ -2098,24 +2709,28 @@
             const featuredProducts = state.products.filter(product => product.featured);
             
             mainContent.innerHTML = `
+                ${renderImageSlider()}
+                
                 <div class="page-header">
-                    <h1>Premium Hardware Solutions</h1>
-                    <p>Your trusted partner for quality hardware and home improvement products</p>
+                    <h1>Fresh Groceries Delivered</h1>
+                    <p>Your trusted source for fresh fruits, vegetables, and groceries</p>
                 </div>
                 
                 <div class="search-container active mb-4">
-                    <input type="text" class="search-input" placeholder="What are you looking for?" id="homeSearch">
+                    <input type="text" class="search-input" placeholder="Search for fruits, vegetables, dairy..." id="homeSearch">
                     <i class="fas fa-search search-icon"></i>
                 </div>
                 
-                <div class="category-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 2rem;">
-                    ${state.categories.map(cat => `
-                        <button class="category-btn" data-category="${cat.id}" style="flex-direction: column; height: auto; padding: 1rem 0.5rem;">
-                            <i class="${cat.icon}" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
-                            <span style="font-size: 0.75rem;">${cat.name}</span>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 2rem;">
+                    ${state.categories.slice(0, 6).map(cat => `
+                        <button class="category-btn" data-category="${cat.id}" style="flex-direction: column; height: auto; padding: 0.75rem 0.25rem;">
+                            <i class="${cat.icon}" style="font-size: 1.25rem; margin-bottom: 0.25rem;"></i>
+                            <span style="font-size: 0.7rem;">${cat.name}</span>
                         </button>
                     `).join('')}
                 </div>
+                
+                <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--dark);">Featured Products</h2>
                 
                 <div class="products-grid">
                     ${renderProductCards(featuredProducts.slice(0, 6))}
@@ -2127,31 +2742,34 @@
                     </button>
                 </div>
                 
-                <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border-radius: var(--radius-lg); padding: 2rem; color: white; margin-top: 3rem;">
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%); border-radius: var(--radius-lg); padding: 1.5rem; color: white; margin-top: 3rem;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
                         <div style="text-align: center;">
-                            <i class="fas fa-shipping-fast" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Free Shipping</h3>
-                            <p style="font-size: 0.875rem; opacity: 0.9;">On orders over MVR 3,000</p>
+                            <i class="fas fa-truck" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                            <h3 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">Free Delivery</h3>
+                            <p style="font-size: 0.75rem; opacity: 0.9;">On orders over MVR 1,500</p>
                         </div>
                         <div style="text-align: center;">
-                            <i class="fas fa-shield-alt" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">2-Year Warranty</h3>
-                            <p style="font-size: 0.875rem; opacity: 0.9;">On all products</p>
+                            <i class="fas fa-leaf" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                            <h3 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">Fresh Daily</h3>
+                            <p style="font-size: 0.75rem; opacity: 0.9;">Farm-to-table produce</p>
                         </div>
                         <div style="text-align: center;">
-                            <i class="fas fa-headset" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">24/7 Support</h3>
-                            <p style="font-size: 0.875rem; opacity: 0.9;">Expert assistance</p>
+                            <i class="fas fa-clock" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                            <h3 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">Same Day Delivery</h3>
+                            <p style="font-size: 0.75rem; opacity: 0.9;">Order by 3 PM</p>
                         </div>
                         <div style="text-align: center;">
-                            <i class="fas fa-undo" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Easy Returns</h3>
-                            <p style="font-size: 0.875rem; opacity: 0.9;">30-day return policy</p>
+                            <i class="fas fa-undo" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                            <h3 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">Easy Returns</h3>
+                            <p style="font-size: 0.75rem; opacity: 0.9;">24-hour return policy</p>
                         </div>
                     </div>
                 </div>
             `;
+            
+            // Initialize slider
+            initializeSlider();
             
             // Add event listeners
             document.querySelectorAll('.category-btn').forEach(btn => {
@@ -2176,6 +2794,47 @@
                     loadPage('products');
                 }
             });
+        }
+
+        function initializeSlider() {
+            const slider = document.querySelector('.slider');
+            const dots = document.querySelectorAll('.slider-dot');
+            let currentSlide = 0;
+            const totalSlides = state.sliderImages.length;
+            
+            function updateSlider() {
+                if (slider) {
+                    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+                    
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentSlide);
+                    });
+                }
+            }
+            
+            // Auto slide every 5 seconds
+            let slideInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }, 5000);
+            
+            // Dot click events
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    clearInterval(slideInterval);
+                    currentSlide = parseInt(dot.dataset.slide);
+                    updateSlider();
+                    
+                    // Restart auto slide
+                    slideInterval = setInterval(() => {
+                        currentSlide = (currentSlide + 1) % totalSlides;
+                        updateSlider();
+                    }, 5000);
+                });
+            });
+            
+            // Initialize
+            updateSlider();
         }
 
         function renderProductsPage() {
@@ -2207,10 +2866,10 @@
                     <p>${filteredProducts.length} products found</p>
                 </div>
                 
-                <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem;">
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.5rem;">
                     ${state.categories.map(cat => `
                         <button class="category-btn ${state.currentCategory === cat.id || (!state.currentCategory && cat.id === 'all') ? 'active' : ''}" 
-                                data-category="${cat.id}" style="white-space: nowrap; padding: 0.75rem 1rem;">
+                                data-category="${cat.id}" style="white-space: nowrap; padding: 0.5rem 0.75rem; font-size: 0.875rem;">
                             <span>${cat.name}</span>
                         </button>
                     `).join('')}
@@ -2245,7 +2904,9 @@
         }
 
         function renderProductCards(products) {
-            return products.map(product => `
+            return products.map(product => {
+                const categoryClass = `category-${product.category}`;
+                return `
                 <div class="product-card" data-id="${product.id}">
                     ${product.original_price > product.price ? 
                         '<div class="product-badge">SALE</div>' : ''}
@@ -2265,23 +2926,23 @@
                                 `<span class="original-price">${formatCurrency(product.original_price)}</span>` : ''}
                         </div>
                         
-                        <div class="stock-status ${getStockClass(product.stock)}">
+                        <div class="stock-status ${getStockClass(product.stock)} ${categoryClass}">
                             <i class="fas ${getStockIcon(product.stock)}"></i>
                             <span>${getStockText(product.stock)}</span>
                         </div>
                         
                         <div class="product-actions">
-                            <button class="btn btn-primary" onclick="addToCart('${product.id}', 1)">
+                            <button class="btn btn-primary" style="font-size: 0.875rem; padding: 0.5rem 0.75rem;" onclick="addToCart('${product.id}', 1)">
                                 <i class="fas fa-cart-plus"></i>
-                                Add to Cart
+                                Add
                             </button>
-                            <button class="btn btn-secondary" onclick="showProductDetails('${product.id}')">
+                            <button class="btn btn-secondary" style="width: 36px; height: 36px;" onclick="showProductDetails('${product.id}')">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function renderCartPage() {
@@ -2291,7 +2952,7 @@
             }).filter(item => item !== null);
             
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal > 3000 ? 0 : 250;
+            const shipping = subtotal > 1500 ? 0 : 150;
             const tax = subtotal * 0.06;
             const total = subtotal + shipping + tax;
             
@@ -2342,7 +3003,7 @@
                             </div>
                             
                             <div class="summary-row">
-                                <span>Shipping</span>
+                                <span>Delivery</span>
                                 <span>${shipping === 0 ? 'FREE' : formatCurrency(shipping)}</span>
                             </div>
                             
@@ -2382,7 +3043,7 @@
                             </div>
                             
                             <div style="font-size: 0.75rem; color: var(--gray-500); text-align: center;">
-                                ${shipping === 0 ? 'Free shipping applied' : `Shipping: ${formatCurrency(shipping)}`}
+                                ${shipping === 0 ? 'Free delivery applied' : `Delivery: ${formatCurrency(shipping)}`}
                             </div>
                         </div>
                     </div>
@@ -2392,7 +3053,7 @@
                             <i class="fas fa-shopping-cart"></i>
                         </div>
                         <h3>Your cart is empty</h3>
-                        <p>Add some products to get started</p>
+                        <p>Add some groceries to get started</p>
                         <button class="btn btn-primary" onclick="loadPage('products')">
                             Browse Products
                         </button>
@@ -2413,20 +3074,20 @@
             }
             
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal > 3000 ? 0 : 250;
+            const shipping = subtotal > 1500 ? 0 : 150;
             const tax = subtotal * 0.06;
             const total = subtotal + shipping + tax;
             
             mainContent.innerHTML = `
                 <div class="page-header">
                     <h1>Checkout</h1>
-                    <p>Complete your purchase</p>
+                    <p>Complete your grocery order</p>
                 </div>
                 
                 <div class="checkout-container">
                     <div>
                         <div class="checkout-section">
-                            <h3 class="section-title">Shipping Information</h3>
+                            <h3 class="section-title">Delivery Information</h3>
                             
                             <div class="form-group">
                                 <label class="form-label">Full Name</label>
@@ -2444,7 +3105,7 @@
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">Address</label>
+                                <label class="form-label">Delivery Address</label>
                                 <input type="text" class="form-input" placeholder="Street Address" id="address">
                             </div>
                             
@@ -2465,6 +3126,16 @@
                                     </select>
                                 </div>
                             </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Delivery Time</label>
+                                <select class="form-input" id="deliveryTime">
+                                    <option value="">Select preferred time</option>
+                                    <option value="morning">Morning (9 AM - 12 PM)</option>
+                                    <option value="afternoon">Afternoon (1 PM - 4 PM)</option>
+                                    <option value="evening">Evening (5 PM - 8 PM)</option>
+                                </select>
+                            </div>
                         </div>
                         
                         <div class="checkout-section mt-3">
@@ -2477,17 +3148,7 @@
                                     </div>
                                     <div class="payment-details">
                                         <div class="payment-name">Cash on Delivery</div>
-                                        <div class="payment-desc">Pay when you receive your order</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="payment-method" data-method="card">
-                                    <div class="payment-icon">
-                                        <i class="fas fa-credit-card"></i>
-                                    </div>
-                                    <div class="payment-details">
-                                        <div class="payment-name">Credit/Debit Card</div>
-                                        <div class="payment-desc">Pay securely with your card</div>
+                                        <div class="payment-desc">Pay when you receive your groceries</div>
                                     </div>
                                 </div>
                                 
@@ -2498,6 +3159,16 @@
                                     <div class="payment-details">
                                         <div class="payment-name">Bank Transfer</div>
                                         <div class="payment-desc">Transfer to our bank account</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="payment-method" data-method="card">
+                                    <div class="payment-icon">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                    <div class="payment-details">
+                                        <div class="payment-name">Credit/Debit Card</div>
+                                        <div class="payment-desc">Pay securely with your card</div>
                                     </div>
                                 </div>
                             </div>
@@ -2526,7 +3197,7 @@
                             </div>
                             
                             <div class="summary-row">
-                                <span>Shipping</span>
+                                <span>Delivery</span>
                                 <span>${shipping === 0 ? 'FREE' : formatCurrency(shipping)}</span>
                             </div>
                             
@@ -2576,8 +3247,9 @@
                 const address = document.getElementById('address').value;
                 const city = document.getElementById('city').value;
                 const island = document.getElementById('island').value;
+                const deliveryTime = document.getElementById('deliveryTime').value;
                 
-                if (!fullName || !email || !phone || !address || !city || !island) {
+                if (!fullName || !email || !phone || !address || !city || !island || !deliveryTime) {
                     alert('Please fill in all required fields');
                     return;
                 }
@@ -2586,7 +3258,7 @@
                 
                 // Create order
                 const order = {
-                    customer: { fullName, email, phone, address, city, island },
+                    customer: { fullName, email, phone, address, city, island, deliveryTime },
                     items: cartItems,
                     paymentMethod: selectedPayment,
                     subtotal,
@@ -2597,21 +3269,28 @@
                     createdAt: new Date().toISOString()
                 };
                 
-                // Save to Firebase
-                database.ref('orders').push(order)
-                    .then((ref) => {
-                        // Clear cart
-                        state.cart = {};
-                        localStorage.removeItem('cart');
-                        updateCartCount();
-                        
-                        // Redirect to confirmation
-                        state.orderDetails = { ...order, id: ref.key };
-                        loadPage('order-confirmation');
-                    })
-                    .catch((error) => {
-                        alert('Error placing order: ' + error.message);
-                    });
+                state.pendingOrder = order;
+                
+                if (selectedPayment === 'bank') {
+                    // Show bank transfer modal
+                    showBankTransferModal();
+                } else {
+                    // Save to Firebase for other payment methods
+                    database.ref('orders').push(order)
+                        .then((ref) => {
+                            // Clear cart
+                            state.cart = {};
+                            localStorage.removeItem('cart');
+                            updateCartCount();
+                            
+                            // Redirect to confirmation
+                            state.orderDetails = { ...order, id: ref.key };
+                            loadPage('order-confirmation');
+                        })
+                        .catch((error) => {
+                            alert('Error placing order: ' + error.message);
+                        });
+                }
             });
         }
 
@@ -2625,12 +3304,12 @@
             
             mainContent.innerHTML = `
                 <div class="empty-state">
-                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--success) 0%, #22c55e 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--success) 0%, #27ae60 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
                         <i class="fas fa-check" style="font-size: 3rem; color: white;"></i>
                     </div>
                     
                     <h1>Order Confirmed!</h1>
-                    <p>Thank you for your order #${order.id.substring(0, 8).toUpperCase()}</p>
+                    <p>Thank you for your grocery order #${order.id.substring(0, 8).toUpperCase()}</p>
                     
                     <div class="checkout-section mt-3" style="max-width: 500px; margin: 0 auto;">
                         <div class="summary-row">
@@ -2639,8 +3318,8 @@
                         </div>
                         
                         <div class="summary-row">
-                            <span>Date</span>
-                            <span>${new Date(order.createdAt).toLocaleDateString()}</span>
+                            <span>Delivery Time</span>
+                            <span>${order.customer.deliveryTime}</span>
                         </div>
                         
                         <div class="summary-row">
@@ -2654,7 +3333,12 @@
                         </div>
                     </div>
                     
-                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <p class="mt-3" style="color: var(--gray-600); max-width: 500px; margin: 0 auto;">
+                        We'll send you a confirmation email with delivery details. 
+                        Our delivery team will contact you before arrival.
+                    </p>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center;">
                         <button class="btn btn-primary" onclick="loadPage('home')">
                             <i class="fas fa-home"></i>
                             Back to Home
@@ -2676,19 +3360,19 @@
             
             mainContent.innerHTML = `
                 <div class="page-header">
-                    <h1>Special Offers</h1>
-                    <p>Limited time deals on premium products</p>
+                    <h1>Weekly Specials</h1>
+                    <p>Limited time deals on fresh groceries</p>
                 </div>
                 
-                <div style="background: linear-gradient(135deg, var(--danger) 0%, #f97316 100%); border-radius: var(--radius-lg); padding: 1.5rem; color: white; margin-bottom: 2rem;">
+                <div style="background: linear-gradient(135deg, var(--danger) 0%, #e74c3c 100%); border-radius: var(--radius-lg); padding: 1.5rem; color: white; margin-bottom: 2rem;">
                     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
                         <div>
-                            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Up to 50% Off</h2>
-                            <p>Don't miss these amazing deals</p>
+                            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Weekly Flash Sale</h2>
+                            <p>Fresh discounts every week</p>
                         </div>
                         <div style="background: white; padding: 0.75rem 1rem; border-radius: var(--radius-md); color: var(--danger);">
                             <div style="font-size: 0.75rem; font-weight: 600;">SALE ENDS IN</div>
-                            <div id="countdown" style="font-size: 1.25rem; font-weight: 800;">03:22:15</div>
+                            <div id="countdown" style="font-size: 1.25rem; font-weight: 800;">02:15:30</div>
                         </div>
                     </div>
                 </div>
@@ -2702,26 +3386,123 @@
                         <div class="empty-icon">
                             <i class="fas fa-tag"></i>
                         </div>
-                        <h3>No current offers</h3>
-                        <p>Check back later for special deals</p>
+                        <h3>No current specials</h3>
+                        <p>Check back next week for new deals</p>
                     </div>
                 `}
+                
+                <div style="background: linear-gradient(135deg, var(--warning) 0%, #f39c12 100%); border-radius: var(--radius-lg); padding: 1.5rem; color: white; margin-top: 3rem;">
+                    <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Fresh Deals Every Week</h2>
+                    <p style="opacity: 0.9;">New specials updated every Monday morning. Subscribe to our newsletter to stay updated!</p>
+                </div>
             `;
             
             // Start countdown
             startCountdown();
         }
 
+        function renderRecipesPage() {
+            mainContent.innerHTML = `
+                <div class="page-header">
+                    <h1>Fresh Recipes</h1>
+                    <p>Delicious recipes using our fresh ingredients</p>
+                </div>
+                
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop" alt="Smoothie Bowl">
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">Berry Smoothie Bowl</h3>
+                            <p class="product-description">Fresh berries, banana, and yogurt</p>
+                            <div class="product-actions">
+                                <button class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-book-open"></i>
+                                    View Recipe
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop" alt="Fresh Salad">
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">Mediterranean Salad</h3>
+                            <p class="product-description">Fresh veggies, feta, olive oil</p>
+                            <div class="product-actions">
+                                <button class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-book-open"></i>
+                                    View Recipe
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="Healthy Meal">
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">Grilled Salmon</h3>
+                            <p class="product-description">With roasted vegetables</p>
+                            <div class="product-actions">
+                                <button class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-book-open"></i>
+                                    View Recipe
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <p style="color: var(--gray-600);">More recipes coming soon!</p>
+                </div>
+            `;
+        }
+
         function renderAccountPage() {
             mainContent.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-icon">
-                        <i class="fas fa-user"></i>
+                <div class="page-header">
+                    <h1>My Account</h1>
+                    <p>Manage your grocery orders and preferences</p>
+                </div>
+                
+                <div class="checkout-section">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div style="text-align: center; padding: 1.5rem; background: var(--gray-100); border-radius: var(--radius-md);">
+                            <i class="fas fa-history" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Order History</h3>
+                            <p style="color: var(--gray-600);">View past orders</p>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 1.5rem; background: var(--gray-100); border-radius: var(--radius-md);">
+                            <i class="fas fa-heart" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Favorites</h3>
+                            <p style="color: var(--gray-600);">Saved items</p>
+                        </div>
                     </div>
-                    <h3>My Account</h3>
-                    <p>Account management coming soon</p>
-                    <button class="btn btn-primary" onclick="loadPage('home')">
-                        Back to Home
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="Your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Delivery Preferences</label>
+                        <select class="form-input">
+                            <option>Standard Delivery (4-6 hours)</option>
+                            <option>Express Delivery (2 hours)</option>
+                            <option>Scheduled Delivery</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-save"></i>
+                        Save Preferences
                     </button>
                 </div>
             `;
@@ -2731,7 +3512,7 @@
             mainContent.innerHTML = `
                 <div class="page-header">
                     <h1>Contact Us</h1>
-                    <p>We're here to help you</p>
+                    <p>We're here to help with your grocery needs</p>
                 </div>
                 
                 <div class="checkout-section">
@@ -2745,8 +3526,14 @@
                         <div style="text-align: center; padding: 1.5rem; background: var(--gray-100); border-radius: var(--radius-md);">
                             <i class="fas fa-envelope" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
                             <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Email Us</h3>
-                            <p style="color: var(--gray-600);">info@sonee.com.mv</p>
+                            <p style="color: var(--gray-600);">info@freshmart.com.mv</p>
                         </div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%); border-radius: var(--radius-md); padding: 1.5rem; color: white; margin-bottom: 2rem;">
+                        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Store Hours</h3>
+                        <p>Open Daily: 7:00 AM - 11:00 PM</p>
+                        <p style="opacity: 0.9; font-size: 0.875rem;">Delivery available until 10:00 PM</p>
                     </div>
                     
                     <div class="form-group">
@@ -2761,7 +3548,7 @@
                     
                     <div class="form-group">
                         <label class="form-label">Message</label>
-                        <textarea class="form-input" placeholder="How can we help you?" rows="4" style="resize: vertical;"></textarea>
+                        <textarea class="form-input" placeholder="How can we help you with your grocery needs?" rows="4" style="resize: vertical;"></textarea>
                     </div>
                     
                     <button class="btn btn-primary" style="width: 100%;">
@@ -2814,9 +3601,9 @@
             const countdownElement = document.getElementById('countdown');
             if (!countdownElement) return;
             
-            let hours = 3;
-            let minutes = 22;
-            let seconds = 15;
+            let hours = 2;
+            let minutes = 15;
+            let seconds = 30;
             
             const timer = setInterval(() => {
                 seconds--;
@@ -2945,7 +3732,7 @@
         window.showProductDetails = showProductDetails;
         window.loadPage = loadPage;
         window.printOrder = printOrder;
+        window.showBankTransferModal = showBankTransferModal;
     </script>
-    
 </body>
 </html>
