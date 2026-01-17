@@ -8,6 +8,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <!-- Google Maps API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqdg6ePdCGvlzHpaEFgOUFPaHEsPYIApw&callback=initMap&libraries=places" async defer></script>
     <style>
@@ -271,43 +272,6 @@
             line-height: 1.2;
         }
 
-        /* Mobile Search Bar */
-        .search-container {
-            position: relative;
-            width: 100%;
-            margin: 0.5rem 0;
-            display: none;
-        }
-
-        .search-container.active {
-            display: block;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.875rem 1rem 0.875rem 3rem;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius-lg);
-            font-size: 1rem;
-            background: var(--light);
-            transition: all var(--transition-fast);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
-            background: white;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray-400);
-        }
-
         /* Header Actions */
         .header-actions {
             display: flex;
@@ -557,6 +521,114 @@
         .sidebar-overlay.active {
             display: block;
             opacity: 1;
+        }
+
+        /* ===== AUTH MODALS ===== */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1001;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-modal.active {
+            display: flex;
+        }
+
+        .auth-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 95%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            margin: 1rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .auth-body {
+            padding: 2rem;
+        }
+
+        .auth-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .auth-message {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .auth-message.success {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        .auth-message.error {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .auth-message.info {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary);
+            border: 1px solid rgba(52, 152, 219, 0.2);
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -1008,7 +1080,7 @@
             margin-top: 2rem;
         }
 
-        /* ===== BANK TRANSFER MODAL ===== */
+        /* ===== BANK TRANSFER MODAL - UPDATED STYLE ===== */
         .bank-transfer-modal {
             display: none;
             position: fixed;
@@ -1050,6 +1122,45 @@
             margin-bottom: 1.5rem;
             color: var(--dark);
             text-align: center;
+        }
+
+        .order-summary-box {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .summary-amount {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .amount-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .amount-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .amount-currency {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .summary-note {
+            font-size: 0.875rem;
+            text-align: center;
+            opacity: 0.9;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .bank-info {
@@ -1885,6 +1996,103 @@
             margin-top: 2rem;
         }
 
+        /* ===== MY ORDERS PAGE ===== */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+            transition: all var(--transition-normal);
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .order-id {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 1.125rem;
+        }
+
+        .order-date {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        .order-status {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+
+        .status-processing {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary);
+        }
+
+        .status-completed {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+
+        .status-cancelled {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+        }
+
+        .order-items {
+            margin-top: 1rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--gray-200);
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--dark);
+        }
+
         /* ===== UTILITIES ===== */
         .hidden {
             display: none !important;
@@ -1914,6 +2122,7 @@
     <div class="loading-screen" id="loadingScreen">
         <div class="logo-animation">
             <div class="company-logo">
+                <i class="fas fa-shopping-basket" style="color: white; font-size: 3rem;"></i>
             </div>
             <div class="line-animation">
                 <div class="line line-1"></div>
@@ -1926,6 +2135,75 @@
             <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-content">
+            <button class="modal-close" id="authModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="loginTab">Login</button>
+                <button class="auth-tab" id="registerTab">Register</button>
+            </div>
+            <div class="auth-body">
+                <div id="loginForm">
+                    <h2 class="auth-title">Login to Your Account</h2>
+                    <div id="authMessage" class="auth-message hidden"></div>
+                    <form class="auth-form" id="loginFormElement">
+                        <div class="form-group">
+                            <label class="form-label">Email or Phone Number</label>
+                            <input type="text" class="form-input" placeholder="email@example.com or +9601234567" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-input" placeholder="Enter your password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                    </form>
+                    <p class="text-center mt-3" style="color: var(--gray-500);">
+                        Don't have an account? <a href="#" id="switchToRegister" style="color: var(--primary); font-weight: 600; text-decoration: none;">Register here</a>
+                    </p>
+                </div>
+                <div id="registerForm" style="display: none;">
+                    <h2 class="auth-title">Create Account</h2>
+                    <div id="registerMessage" class="auth-message hidden"></div>
+                    <form class="auth-form" id="registerFormElement">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input" placeholder="John Doe" id="registerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" placeholder="email@example.com" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-input" placeholder="+9601234567" id="registerPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-input" placeholder="Create a password (min. 6 characters)" id="registerPassword" minlength="6" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-input" placeholder="Confirm your password" id="registerConfirmPassword" minlength="6" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            Create Account
+                        </button>
+                    </form>
+                    <p class="text-center mt-3" style="color: var(--gray-500);">
+                        Already have an account? <a href="#" id="switchToLogin" style="color: var(--primary); font-weight: 600; text-decoration: none;">Login here</a>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1948,6 +2226,19 @@
             <div class="bank-details">
                 <h2 class="bank-details-title">Bank Transfer Details</h2>
                 
+                <!-- Order Summary Box -->
+                <div class="order-summary-box" id="orderSummaryBox">
+                    <div class="summary-amount">
+                        <div class="amount-label">Total Amount to Pay</div>
+                        <div class="amount-value" id="amountValue">0.00</div>
+                        <div class="amount-currency">Maldives Rufiyaa (MVR)</div>
+                    </div>
+                    <div class="summary-note">
+                        Please transfer the exact amount shown above
+                    </div>
+                </div>
+                
+                <!-- Bank Information -->
                 <div class="bank-info">
                     <div class="bank-info-item">
                         <span class="bank-label">Account Name:</span>
@@ -1969,20 +2260,37 @@
                     </div>
                     <div class="bank-info-item">
                         <span class="bank-label">SWIFT Code:</span>
-                        <span class="bank-value">BMLFMVMV</span>
-                    </div>
-                    <div class="bank-info-item">
-                        <span class="bank-label">Reference:</span>
                         <span class="bank-value">
-                            <span id="orderReference">ORDER-${generateOrderId()}</span>
-                            <button class="copy-btn" id="copyReferenceBtn">
+                            <span id="swiftCode">BMLFMVMV</span>
+                            <button class="copy-btn" id="copySwiftBtn">
                                 <i class="fas fa-copy"></i>
                                 Copy
                             </button>
                         </span>
                     </div>
+                    <div class="bank-info-item">
+                        <span class="bank-label">Currency:</span>
+                        <span class="bank-value">Maldives Rufiyaa (MVR)</span>
+                    </div>
                 </div>
                 
+                <!-- Important Notes -->
+                <div style="background: rgba(243, 156, 18, 0.1); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+                    <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <i class="fas fa-exclamation-circle" style="color: var(--warning); font-size: 1.25rem; flex-shrink: 0;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: var(--dark); margin-bottom: 0.25rem;">Important Notes:</div>
+                            <div style="font-size: 0.875rem; color: var(--gray-700); line-height: 1.4;">
+                                1. Transfer the exact amount shown above<br>
+                                2. Include your order number in the transfer description<br>
+                                3. Complete payment within 24 hours<br>
+                                4. Upload your payment receipt below
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Receipt Upload Section -->
                 <div class="upload-receipt">
                     <label class="upload-label">Upload Payment Receipt</label>
                     <div class="upload-area" id="uploadArea">
@@ -2004,6 +2312,7 @@
                     </div>
                 </div>
                 
+                <!-- Action Buttons -->
                 <div class="modal-actions">
                     <button class="btn btn-primary" id="confirmPaymentBtn">
                         <i class="fas fa-check"></i>
@@ -2061,9 +2370,6 @@
                 </a>
                 
                 <div class="header-actions">
-                    <button class="action-btn" id="searchToggle">
-                        <i class="fas fa-search"></i>
-                    </button>
                     <button class="action-btn" id="favoritesBtn">
                         <i class="fas fa-heart"></i>
                         <span class="favorites-badge" id="favoritesBadge">0</span>
@@ -2074,16 +2380,33 @@
                     </button>
                 </div>
             </div>
-            
-            <!-- Mobile Search -->
-            <div class="search-container" id="searchContainer">
-                <input type="text" class="search-input" placeholder="Search groceries..." id="searchInput">
-                <i class="fas fa-search search-icon"></i>
-            </div>
         </div>
         
         <!-- Mobile Navigation -->
         <nav id="mobileNav">
+            <!-- Search in Sidebar -->
+            <div style="margin-bottom: 1.5rem;">
+                <div style="position: relative;">
+                    <input type="text" 
+                           style="width: 100%; padding: 0.875rem 1rem 0.875rem 3rem; border: 2px solid var(--gray-200); border-radius: var(--radius-md); font-size: 1rem; background: var(--gray-100);"
+                           placeholder="Search groceries..." 
+                           id="sidebarSearch">
+                    <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--gray-400);"></i>
+                </div>
+            </div>
+            
+            <!-- User Profile Section in Sidebar -->
+            <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-100); border-radius: var(--radius-md); margin-bottom: 1.5rem;" id="sidebarUserProfile">
+                <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 1.25rem;" id="sidebarUserAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: var(--dark);" id="sidebarUserName">Guest User</div>
+                    <div style="font-size: 0.875rem; color: var(--gray-500);" id="sidebarUserEmail">Login to access account</div>
+                </div>
+            </div>
+            
+            <!-- Categories -->
             <div class="nav-categories">
                 <button class="category-btn" data-category="all">
                     <span>All Products</span>
@@ -2115,6 +2438,7 @@
                 </button>
             </div>
             
+            <!-- Navigation Links -->
             <div class="nav-links">
                 <a href="#" class="nav-link" data-page="home">
                     <i class="fas fa-home"></i>
@@ -2128,21 +2452,33 @@
                     <i class="fas fa-tag"></i>
                     <span>Weekly Specials</span>
                 </a>
-                <a href="#" class="nav-link" data-page="favorites">
+                <a href="#" class="nav-link" id="sidebarFavoritesLink" data-page="favorites">
                     <i class="fas fa-heart"></i>
                     <span>My Favorites</span>
                 </a>
-                <a href="#" class="nav-link" id="storeLocationsLink">
+                <a href="#" class="nav-link" id="sidebarStoreLocationsLink">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Store Locations</span>
                 </a>
-                <a href="#" class="nav-link" data-page="account">
+                <a href="#" class="nav-link" id="sidebarMyOrdersLink" data-page="orders">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>My Orders</span>
+                </a>
+                <a href="#" class="nav-link" id="sidebarAccountLink">
                     <i class="fas fa-user"></i>
                     <span>My Account</span>
                 </a>
                 <a href="#" class="nav-link" data-page="contact">
                     <i class="fas fa-phone"></i>
                     <span>Contact Us</span>
+                </a>
+                <a href="#" class="nav-link" id="sidebarLogoutLink" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+                <a href="#" class="nav-link" id="sidebarLoginLink">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login / Register</span>
                 </a>
             </div>
         </nav>
@@ -2201,21 +2537,22 @@
     </footer>
 
     <script>
-        // ===== FIREBASE CONFIGURATION =====
-        const firebaseConfig = {
-            apiKey: "AIzaSyCqdg6ePdCGvlzHpaEFgOUFPaHEsPYIApw",
-            authDomain: "operationinterectiondata.firebaseapp.com",
-            databaseURL: "https://operationinterectiondata-default-rtdb.firebaseio.com",
-            projectId: "operationinterectiondata",
-            storageBucket: "operationinterectiondata.appspot.com",
-            messagingSenderId: "211887231593",
-            appId: "1:211887231593:web:aac4253ab20803876348f8",
-            measurementId: "G-HSL5TF5FTB"
-        };
+       // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyARF48_dYIO4e9aBZguW0Bru7_BvcqGJm0",
+  authDomain: "aleelatrade-31ebf.firebaseapp.com",
+  databaseURL: "https://aleelatrade-31ebf-default-rtdb.firebaseio.com",
+  projectId: "aleelatrade-31ebf",
+  storageBucket: "aleelatrade-31ebf.firebasestorage.app",
+  messagingSenderId: "902208155198",
+  appId: "1:902208155198:web:35ea4005bdee7a8c57eb6f",
+  measurementId: "G-2YY9NV98HM"
+};
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const auth = firebase.auth();
 
         // ===== APP STATE =====
         let state = {
@@ -2235,23 +2572,10 @@
                 { id: 'bakery', name: 'Bakery', icon: 'fas fa-bread-slice' },
                 { id: 'beverages', name: 'Beverages', icon: 'fas fa-wine-bottle' }
             ],
-            sliderImages: [
-                {
-                    image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&fit=crop',
-                    title: 'Fresh Produce Daily',
-                    description: 'Farm-fresh fruits and vegetables'
-                },
-                {
-                    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&fit=crop',
-                    title: 'Weekly Specials',
-                    description: 'Up to 30% off on selected items'
-                },
-                {
-                    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&fit=crop',
-                    title: 'Organic Selection',
-                    description: 'Healthy organic options available'
-                }
-            ],
+            sliderImages: [],
+            deliverySettings: {},
+            currentUser: null,
+            userData: null,
             currentSlide: 0,
             map: null,
             storeLocations: [
@@ -2261,7 +2585,8 @@
                     lat: 4.1755,
                     lng: 73.5093,
                     phone: "+960 333 6699",
-                    hours: "7:00 AM - 11:00 PM"
+                    hours: "7:00 AM - 11:00 PM",
+                    googleMapsUrl: "https://maps.app.goo.gl/LZHMVCEQ6p62apws6"
                 },
                 {
                     name: "Aleela Trade Hulhumale' Branch",
@@ -2269,10 +2594,12 @@
                     lat: 4.2167,
                     lng: 73.5333,
                     phone: "+960 333 6688",
-                    hours: "8:00 AM - 10:00 PM"
+                    hours: "8:00 AM - 10:00 PM",
+                    googleMapsUrl: "https://maps.app.goo.gl/LZHMVCEQ6p62apws6"
                 }
             ],
-            pendingOrder: null
+            pendingOrder: null,
+            currentOrderTotal: 0
         };
 
         // ===== DOM ELEMENTS =====
@@ -2281,9 +2608,6 @@
         const menuToggle = document.getElementById('menuToggle');
         const mobileNav = document.getElementById('mobileNav');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
-        const searchToggle = document.getElementById('searchToggle');
-        const searchContainer = document.getElementById('searchContainer');
-        const searchInput = document.getElementById('searchInput');
         const cartBtn = document.getElementById('cartBtn');
         const cartBadge = document.getElementById('cartBadge');
         const favoritesBtn = document.getElementById('favoritesBtn');
@@ -2295,6 +2619,7 @@
         const bankTransferModal = document.getElementById('bankTransferModal');
         const bankModalClose = document.getElementById('bankModalClose');
         const copyAccountBtn = document.getElementById('copyAccountBtn');
+        const copySwiftBtn = document.getElementById('copySwiftBtn');
         const uploadArea = document.getElementById('uploadArea');
         const receiptFile = document.getElementById('receiptFile');
         const filePreview = document.getElementById('filePreview');
@@ -2307,10 +2632,36 @@
         const mapModalClose = document.getElementById('mapModalClose');
         const closeMapBtn = document.getElementById('closeMapBtn');
         const getDirectionsBtn = document.getElementById('getDirectionsBtn');
-        const storeLocationsLink = document.getElementById('storeLocationsLink');
-        const footerStoreLink = document.getElementById('footerStoreLink');
         const aboutUsLink = document.getElementById('aboutUsLink');
+        const footerStoreLink = document.getElementById('footerStoreLink');
         const contactUsFooter = document.getElementById('contactUsFooter');
+        
+        // Sidebar elements
+        const sidebarSearch = document.getElementById('sidebarSearch');
+        const sidebarUserProfile = document.getElementById('sidebarUserProfile');
+        const sidebarUserAvatar = document.getElementById('sidebarUserAvatar');
+        const sidebarUserName = document.getElementById('sidebarUserName');
+        const sidebarUserEmail = document.getElementById('sidebarUserEmail');
+        const sidebarFavoritesLink = document.getElementById('sidebarFavoritesLink');
+        const sidebarStoreLocationsLink = document.getElementById('sidebarStoreLocationsLink');
+        const sidebarMyOrdersLink = document.getElementById('sidebarMyOrdersLink');
+        const sidebarAccountLink = document.getElementById('sidebarAccountLink');
+        const sidebarLogoutLink = document.getElementById('sidebarLogoutLink');
+        const sidebarLoginLink = document.getElementById('sidebarLoginLink');
+        
+        // Auth modal elements
+        const authModal = document.getElementById('authModal');
+        const authModalClose = document.getElementById('authModalClose');
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginFormElement = document.getElementById('loginFormElement');
+        const registerFormElement = document.getElementById('registerFormElement');
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const authMessage = document.getElementById('authMessage');
+        const registerMessage = document.getElementById('registerMessage');
 
         // ===== CURRENCY FORMATTER =====
         function formatCurrency(amount) {
@@ -2328,10 +2679,13 @@
             // Initialize event listeners
             setupEventListeners();
             
+            // Set up auth state listener
+            setupAuthListener();
+            
             // Hide loading screen after 2 seconds
             setTimeout(() => {
                 loadingScreen.classList.add('hidden');
-                loadProducts();
+                loadAppData();
             }, 2000);
         }
 
@@ -2342,15 +2696,6 @@
             // Sidebar overlay
             sidebarOverlay.addEventListener('click', closeMobileNav);
             
-            // Search toggle
-            searchToggle.addEventListener('click', () => {
-                searchContainer.classList.toggle('active');
-                searchToggle.classList.toggle('active');
-                if (searchContainer.classList.contains('active')) {
-                    searchInput.focus();
-                }
-            });
-            
             // Cart button
             cartBtn.addEventListener('click', () => {
                 loadPage('cart');
@@ -2359,14 +2704,18 @@
             
             // Favorites button
             favoritesBtn.addEventListener('click', () => {
-                loadPage('favorites');
+                if (state.currentUser) {
+                    loadPage('favorites');
+                } else {
+                    showAuthModal();
+                }
                 closeMobileNav();
             });
             
-            // Search input
-            searchInput.addEventListener('keypress', (e) => {
+            // Sidebar search
+            sidebarSearch.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
-                    state.currentSearch = searchInput.value;
+                    state.currentSearch = sidebarSearch.value;
                     state.currentCategory = null;
                     loadPage('products');
                     closeMobileNav();
@@ -2392,13 +2741,56 @@
                 });
             });
             
-            // Store locations links
-            storeLocationsLink.addEventListener('click', (e) => {
+            // Sidebar links
+            sidebarFavoritesLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (state.currentUser) {
+                    loadPage('favorites');
+                } else {
+                    showAuthModal();
+                }
+                closeMobileNav();
+            });
+            
+            sidebarStoreLocationsLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 showMapModal();
                 closeMobileNav();
             });
             
+            sidebarMyOrdersLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (state.currentUser) {
+                    loadPage('orders');
+                } else {
+                    showAuthModal();
+                }
+                closeMobileNav();
+            });
+            
+            sidebarAccountLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (state.currentUser) {
+                    loadPage('account');
+                } else {
+                    showAuthModal();
+                }
+                closeMobileNav();
+            });
+            
+            sidebarLoginLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showAuthModal();
+                closeMobileNav();
+            });
+            
+            sidebarLogoutLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                handleLogout();
+                closeMobileNav();
+            });
+            
+            // Store locations links
             footerStoreLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 showMapModal();
@@ -2429,6 +2821,11 @@
                 productModal.classList.remove('active');
             });
             
+            // Auth modal
+            authModalClose.addEventListener('click', () => {
+                authModal.classList.remove('active');
+            });
+            
             // Bank modal close
             bankModalClose.addEventListener('click', () => {
                 bankTransferModal.classList.remove('active');
@@ -2449,13 +2846,19 @@
             
             // Get directions button
             getDirectionsBtn.addEventListener('click', () => {
-                getDirections();
+                window.open('https://maps.app.goo.gl/LZHMVCEQ6p62apws6', '_blank');
             });
             
             // Close modals when clicking outside
             productModal.addEventListener('click', (e) => {
                 if (e.target === productModal) {
                     productModal.classList.remove('active');
+                }
+            });
+            
+            authModal.addEventListener('click', (e) => {
+                if (e.target === authModal) {
+                    authModal.classList.remove('active');
                 }
             });
             
@@ -2475,13 +2878,15 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     productModal.classList.remove('active');
+                    authModal.classList.remove('active');
                     bankTransferModal.classList.remove('active');
                     mapModal.classList.remove('active');
                 }
             });
             
-            // Copy account number
-            copyAccountBtn.addEventListener('click', copyAccountNumber);
+            // Copy buttons
+            copyAccountBtn.addEventListener('click', () => copyToClipboard('accountNumber', copyAccountBtn));
+            copySwiftBtn.addEventListener('click', () => copyToClipboard('swiftCode', copySwiftBtn));
             
             // File upload
             uploadArea.addEventListener('click', () => {
@@ -2498,6 +2903,206 @@
             
             // Confirm payment
             confirmPaymentBtn.addEventListener('click', confirmPayment);
+            
+            // Auth tabs
+            loginTab.addEventListener('click', () => {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            });
+            
+            registerTab.addEventListener('click', () => {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerForm.style.display = 'block';
+                loginForm.style.display = 'none';
+            });
+            
+            switchToRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                registerTab.click();
+            });
+            
+            switchToLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginTab.click();
+            });
+            
+            // Login form
+            loginFormElement.addEventListener('submit', handleLogin);
+            
+            // Register form
+            registerFormElement.addEventListener('submit', handleRegister);
+        }
+
+        // ===== AUTH FUNCTIONS =====
+        function setupAuthListener() {
+            auth.onAuthStateChanged(async (user) => {
+                state.currentUser = user;
+                
+                if (user) {
+                    // User is signed in
+                    await loadUserData(user.uid);
+                    updateUserInterface(true);
+                    updateSidebarUserInfo();
+                    showNotification(`Welcome back, ${state.userData?.fullName || 'User'}!`);
+                } else {
+                    // User is signed out
+                    state.userData = null;
+                    updateUserInterface(false);
+                    updateSidebarUserInfo();
+                }
+            });
+        }
+
+        async function loadUserData(userId) {
+            try {
+                const snapshot = await database.ref(`users/${userId}`).once('value');
+                if (snapshot.exists()) {
+                    state.userData = snapshot.val();
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        function updateSidebarUserInfo() {
+            if (state.currentUser && state.userData) {
+                // User is logged in
+                sidebarUserAvatar.innerHTML = state.userData.fullName.charAt(0).toUpperCase();
+                sidebarUserName.textContent = state.userData.fullName;
+                sidebarUserEmail.textContent = state.userData.email;
+                sidebarLoginLink.style.display = 'none';
+                sidebarLogoutLink.style.display = 'flex';
+            } else {
+                // User is not logged in
+                sidebarUserAvatar.innerHTML = '<i class="fas fa-user"></i>';
+                sidebarUserName.textContent = 'Guest User';
+                sidebarUserEmail.textContent = 'Login to access account';
+                sidebarLoginLink.style.display = 'flex';
+                sidebarLogoutLink.style.display = 'none';
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const identifier = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            authMessage.textContent = '';
+            authMessage.classList.add('hidden');
+            
+            try {
+                // Check if identifier is email or phone
+                let userCredential;
+                if (identifier.includes('@')) {
+                    // Email login
+                    userCredential = await auth.signInWithEmailAndPassword(identifier, password);
+                } else {
+                    // Phone number login - find user by phone
+                    const usersRef = database.ref('users');
+                    const snapshot = await usersRef.orderByChild('phone').equalTo(identifier).once('value');
+                    
+                    if (snapshot.exists()) {
+                        const userData = Object.values(snapshot.val())[0];
+                        userCredential = await auth.signInWithEmailAndPassword(userData.email, password);
+                    } else {
+                        throw new Error('Invalid phone number or password');
+                    }
+                }
+                
+                // Success
+                authModal.classList.remove('active');
+                loginFormElement.reset();
+            } catch (error) {
+                authMessage.textContent = error.message;
+                authMessage.classList.remove('hidden');
+                authMessage.classList.add('error');
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            registerMessage.textContent = '';
+            registerMessage.classList.add('hidden');
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                registerMessage.textContent = 'Passwords do not match';
+                registerMessage.classList.remove('hidden');
+                registerMessage.classList.add('error');
+                return;
+            }
+            
+            try {
+                // Check if email already exists
+                const emailCheck = await database.ref('users').orderByChild('email').equalTo(email).once('value');
+                if (emailCheck.exists()) {
+                    throw new Error('Email already registered');
+                }
+                
+                // Check if phone already exists
+                const phoneCheck = await database.ref('users').orderByChild('phone').equalTo(phone).once('value');
+                if (phoneCheck.exists()) {
+                    throw new Error('Phone number already registered');
+                }
+                
+                // Create user in Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Save user data to database
+                await database.ref(`users/${userCredential.user.uid}`).set({
+                    fullName: name,
+                    email: email,
+                    phone: phone,
+                    createdAt: new Date().toISOString(),
+                    role: 'customer'
+                });
+                
+                // Success
+                authModal.classList.remove('active');
+                registerFormElement.reset();
+                showNotification('Account created successfully!');
+            } catch (error) {
+                registerMessage.textContent = error.message;
+                registerMessage.classList.remove('hidden');
+                registerMessage.classList.add('error');
+            }
+        }
+
+        function handleLogout() {
+            auth.signOut()
+                .then(() => {
+                    showNotification('Logged out successfully');
+                })
+                .catch((error) => {
+                    showNotification('Error logging out: ' + error.message, 'error');
+                });
+        }
+
+        function updateUserInterface(isLoggedIn) {
+            if (isLoggedIn && state.userData) {
+                // User is logged in
+                // Update sidebar user info is already handled by updateSidebarUserInfo
+            }
+        }
+
+        function showAuthModal() {
+            authModal.classList.add('active');
+            loginTab.click();
+            loginFormElement.reset();
+            registerFormElement.reset();
+            authMessage.classList.add('hidden');
+            registerMessage.classList.add('hidden');
         }
 
         // ===== MAP FUNCTIONS =====
@@ -2529,7 +3134,7 @@
                             <p style="margin: 0.25rem 0;">${location.address}</p>
                             <p style="margin: 0.25rem 0;"><strong>Phone:</strong> ${location.phone}</p>
                             <p style="margin: 0.25rem 0;"><strong>Hours:</strong> ${location.hours}</p>
-                            <button onclick="getDirectionsToStore(${location.lat}, ${location.lng})" 
+                            <button onclick="window.open('${location.googleMapsUrl}', '_blank')" 
                                     style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; margin-top: 0.5rem;">
                                 Get Directions
                             </button>
@@ -2548,43 +3153,6 @@
             
             if (!state.map) {
                 setTimeout(initMap, 100);
-            }
-        }
-
-        function getDirections() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const userLat = position.coords.latitude;
-                    const userLng = position.coords.longitude;
-                    const store = state.storeLocations[0];
-                    const url = `https://www.google.com/maps/dir/${userLat},${userLng}/${store.lat},${store.lng}`;
-                    window.open(url, '_blank');
-                }, () => {
-                    const store = state.storeLocations[0];
-                    const url = `https://www.google.com/maps/dir//${store.lat},${store.lng}`;
-                    window.open(url, '_blank');
-                });
-            } else {
-                const store = state.storeLocations[0];
-                const url = `https://www.google.com/maps/dir//${store.lat},${store.lng}`;
-                window.open(url, '_blank');
-            }
-        }
-
-        function getDirectionsToStore(lat, lng) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const userLat = position.coords.latitude;
-                    const userLng = position.coords.longitude;
-                    const url = `https://www.google.com/maps/dir/${userLat},${userLng}/${lat},${lng}`;
-                    window.open(url, '_blank');
-                }, () => {
-                    const url = `https://www.google.com/maps/dir//${lat},${lng}`;
-                    window.open(url, '_blank');
-                });
-            } else {
-                const url = `https://www.google.com/maps/dir//${lat},${lng}`;
-                window.open(url, '_blank');
             }
         }
 
@@ -2621,12 +3189,16 @@
 
         // ===== SLIDER FUNCTIONS =====
         function renderImageSlider() {
+            if (!state.sliderImages || state.sliderImages.length === 0) {
+                return '';
+            }
+            
             return `
                 <div class="slider-container">
                     <div class="slider" id="imageSlider">
                         ${state.sliderImages.map((slide, index) => `
                             <div class="slide">
-                                <img src="${slide.image}" alt="${slide.title}">
+                                <img src="${slide.image}" alt="${slide.title}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&fit=crop'">
                                 <div class="slide-content">
                                     <h2>${slide.title}</h2>
                                     <p>${slide.description}</p>
@@ -2647,6 +3219,8 @@
         function initializeSlider() {
             const slider = document.querySelector('.slider');
             const dots = document.querySelectorAll('.slider-dot');
+            if (!slider || !dots.length) return;
+            
             let currentSlide = 0;
             const totalSlides = state.sliderImages.length;
             
@@ -2749,8 +3323,49 @@
             }, 400);
         }
 
-        // ===== PRODUCT MANAGEMENT =====
-        function loadProducts() {
+        // ===== APP DATA LOADING =====
+        function loadAppData() {
+            // Load delivery settings
+            database.ref('settings/delivery').on('value', (snapshot) => {
+                state.deliverySettings = snapshot.val() || {
+                    minOrder: 100,
+                    deliveryFee: 150,
+                    freeDeliveryThreshold: 1500
+                };
+            });
+            
+            // Load slider images
+            database.ref('slider').on('value', (snapshot) => {
+                const sliderData = snapshot.val();
+                if (sliderData) {
+                    state.sliderImages = Object.values(sliderData);
+                } else {
+                    // Default slider images
+                    state.sliderImages = [
+                        {
+                            image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&fit=crop',
+                            title: 'Fresh Produce Daily',
+                            description: 'Farm-fresh fruits and vegetables'
+                        },
+                        {
+                            image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&fit=crop',
+                            title: 'Weekly Specials',
+                            description: 'Up to 30% off on selected items'
+                        },
+                        {
+                            image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&fit=crop',
+                            title: 'Organic Selection',
+                            description: 'Healthy organic options available'
+                        }
+                    ];
+                }
+                
+                if (state.currentPage === 'home') {
+                    renderHomePage();
+                }
+            });
+            
+            // Load products
             database.ref('products').on('value', (snapshot) => {
                 const productsData = snapshot.val();
                 if (productsData) {
@@ -2838,134 +3453,6 @@
                         'Type': 'Grade A',
                         'Farm': 'Free-range'
                     }
-                },
-                {
-                    name: 'Fresh Chicken Breast - 500g',
-                    price: 65.99,
-                    original_price: 69.99,
-                    image: 'https://images.unsplash.com/photo-1604503468504-60c6f7eaa6d0?w=400&h=300&fit=crop',
-                    description: 'Boneless chicken breast, skinless and fresh.',
-                    category: 'meat',
-                    featured: true,
-                    stock: 40,
-                    specifications: {
-                        'Cut': 'Breast',
-                        'Weight': '500g',
-                        'Preparation': 'Boneless, Skinless',
-                        'Origin': 'Local'
-                    }
-                },
-                {
-                    name: 'Fresh Bread - White Loaf',
-                    price: 18.99,
-                    original_price: 22.99,
-                    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop',
-                    description: 'Freshly baked white bread, soft and delicious.',
-                    category: 'bakery',
-                    featured: false,
-                    stock: 60,
-                    specifications: {
-                        'Type': 'White Bread',
-                        'Weight': '400g',
-                        'Baked': 'Daily',
-                        'Ingredients': 'Wheat flour, yeast, water, salt'
-                    }
-                },
-                {
-                    name: 'Fresh Tomatoes - 1kg',
-                    price: 32.99,
-                    original_price: 36.99,
-                    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&h=300&fit=crop',
-                    description: 'Fresh ripe tomatoes, perfect for salads and cooking.',
-                    category: 'vegetables',
-                    featured: false,
-                    stock: 150,
-                    specifications: {
-                        'Variety': 'Roma',
-                        'Weight': '1kg',
-                        'Origin': 'Local farms',
-                        'Quality': 'Grade A'
-                    }
-                },
-                {
-                    name: 'Fresh Potatoes - 2kg',
-                    price: 42.99,
-                    original_price: 46.99,
-                    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop',
-                    description: 'Fresh potatoes, great for boiling, baking or frying.',
-                    category: 'vegetables',
-                    featured: false,
-                    stock: 120,
-                    specifications: {
-                        'Variety': 'Russet',
-                        'Weight': '2kg',
-                        'Origin': 'Local farms',
-                        'Best for': 'Boiling, baking, frying'
-                    }
-                },
-                {
-                    name: 'Fresh Orange Juice - 1L',
-                    price: 55.99,
-                    original_price: 59.99,
-                    image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop',
-                    description: '100% pure orange juice, no added sugar.',
-                    category: 'beverages',
-                    featured: false,
-                    stock: 80,
-                    specifications: {
-                        'Brand': 'Tropicana',
-                        'Volume': '1 Liter',
-                        'Ingredients': '100% Orange Juice',
-                        'No Added': 'Sugar, preservatives'
-                    }
-                },
-                {
-                    name: 'Fresh Salmon Fillet - 300g',
-                    price: 125.99,
-                    original_price: 139.99,
-                    image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=300&fit=crop',
-                    description: 'Fresh salmon fillet, skin-on, perfect for grilling.',
-                    category: 'meat',
-                    featured: true,
-                    stock: 25,
-                    specifications: {
-                        'Type': 'Atlantic Salmon',
-                        'Weight': '300g',
-                        'Preparation': 'Fillet, skin-on',
-                        'Origin': 'Norway'
-                    }
-                },
-                {
-                    name: 'Fresh Yogurt - 500g',
-                    price: 28.99,
-                    original_price: 32.99,
-                    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop',
-                    description: 'Natural yogurt, creamy and probiotic.',
-                    category: 'dairy',
-                    featured: false,
-                    stock: 90,
-                    specifications: {
-                        'Brand': 'Dannon',
-                        'Type': 'Natural Yogurt',
-                        'Weight': '500g',
-                        'Fat Content': '2%'
-                    }
-                },
-                {
-                    name: 'Fresh Strawberries - 250g',
-                    price: 65.99,
-                    original_price: 69.99,
-                    image: 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=400&h=300&fit=crop',
-                    description: 'Sweet fresh strawberries, perfect for desserts.',
-                    category: 'fruits',
-                    featured: true,
-                    stock: 35,
-                    specifications: {
-                        'Variety': 'Sweet Charlie',
-                        'Weight': '250g',
-                        'Origin': 'California',
-                        'Season': 'Peak season'
-                    }
                 }
             ];
 
@@ -2976,6 +3463,11 @@
 
         // ===== FAVORITES SYSTEM =====
         function toggleFavorite(productId) {
+            if (!state.currentUser) {
+                showAuthModal();
+                return;
+            }
+            
             const index = state.favorites.indexOf(productId);
             if (index === -1) {
                 state.favorites.push(productId);
@@ -3010,7 +3502,7 @@
 
             modalContent.innerHTML = `
                 <div class="modal-image">
-                    <img src="${product.image}" alt="${product.name}">
+                    <img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&fit=crop'">
                 </div>
                 <div class="modal-body">
                     <h2 class="modal-title">${product.name}</h2>
@@ -3063,38 +3555,48 @@
             return 'AL' + Date.now().toString().slice(-8);
         }
 
-        function showBankTransferModal(orderId) {
+        function showBankTransferModal(orderId, orderTotal) {
+            if (!state.currentUser) {
+                showAuthModal();
+                return null;
+            }
+            
+            // Reset file upload
             receiptFile.value = '';
             filePreview.style.display = 'none';
             uploadArea.style.display = 'block';
             
+            // Reset copy buttons
             copyAccountBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
             copyAccountBtn.classList.remove('copied');
+            copySwiftBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            copySwiftBtn.classList.remove('copied');
             
-            const reference = orderId || generateOrderId();
-            document.getElementById('orderReference').textContent = reference;
+            // Set order total
+            state.currentOrderTotal = orderTotal;
+            document.getElementById('amountValue').textContent = orderTotal.toFixed(2);
             
             bankTransferModal.classList.add('active');
             
-            return reference;
+            return orderId;
         }
 
-        function copyAccountNumber() {
-            const accountNumber = document.getElementById('accountNumber').textContent;
+        function copyToClipboard(elementId, button) {
+            const text = document.getElementById(elementId).textContent;
             
-            navigator.clipboard.writeText(accountNumber)
+            navigator.clipboard.writeText(text)
                 .then(() => {
-                    copyAccountBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    copyAccountBtn.classList.add('copied');
+                    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    button.classList.add('copied');
                     
                     setTimeout(() => {
-                        copyAccountBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
-                        copyAccountBtn.classList.remove('copied');
+                        button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                        button.classList.remove('copied');
                     }, 2000);
                 })
                 .catch(err => {
                     console.error('Failed to copy: ', err);
-                    alert('Failed to copy account number. Please copy manually.');
+                    alert('Failed to copy. Please copy manually.');
                 });
         }
 
@@ -3130,7 +3632,12 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        function confirmPayment() {
+        async function confirmPayment() {
+            if (!state.currentUser) {
+                showAuthModal();
+                return;
+            }
+            
             if (!receiptFile.files[0]) {
                 alert('Please upload your payment receipt before confirming.');
                 return;
@@ -3139,38 +3646,49 @@
             const order = state.pendingOrder;
             const orderId = generateOrderId();
             
-            database.ref('orders').push({
-                ...order,
-                orderId: orderId,
-                paymentStatus: 'pending',
-                paymentMethod: 'bank_transfer',
-                bankTransfer: {
-                    accountNumber: '7712440335001',
-                    accountName: 'Aleela Trade',
-                    bankName: 'Bank of Maldives',
-                    reference: orderId,
-                    receiptUploaded: true,
-                    receiptFileName: receiptFile.files[0].name,
-                    receiptFileSize: receiptFile.files[0].size,
-                    receiptFileType: receiptFile.files[0].type,
-                    uploadedAt: new Date().toISOString()
-                },
-                status: 'pending',
-                createdAt: new Date().toISOString()
-            })
-            .then((ref) => {
+            try {
+                await database.ref('orders').push({
+                    ...order,
+                    orderId: orderId,
+                    userId: state.currentUser.uid,
+                    customer: {
+                        ...order.customer,
+                        name: state.userData.fullName,
+                        phone: state.userData.phone,
+                        email: state.userData.email
+                    },
+                    paymentStatus: 'pending_review',
+                    paymentMethod: 'bank_transfer',
+                    bankTransfer: {
+                        accountNumber: '7712440335001',
+                        accountName: 'Aleela Trade',
+                        bankName: 'Bank of Maldives',
+                        swiftCode: 'BMLFMVMV',
+                        amount: state.currentOrderTotal,
+                        receiptUploaded: true,
+                        receiptFileName: receiptFile.files[0].name,
+                        receiptFileSize: receiptFile.files[0].size,
+                        receiptFileType: receiptFile.files[0].type,
+                        uploadedAt: new Date().toISOString()
+                    },
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                });
+                
+                // Clear cart
                 state.cart = {};
                 localStorage.removeItem('cart');
                 updateCartCount();
                 
-                state.orderDetails = { ...order, id: ref.key, orderId: orderId };
+                // Set order details for confirmation page
+                state.orderDetails = { ...order, id: orderId, orderId: orderId };
                 bankTransferModal.classList.remove('active');
                 loadPage('order-confirmation');
-                showNotification('Order placed successfully! Bank details saved.');
-            })
-            .catch((error) => {
+                showNotification('Order placed successfully! Payment is under review.');
+            } catch (error) {
                 alert('Error placing order: ' + error.message);
-            });
+            }
         }
 
         // ===== PAGE MANAGEMENT =====
@@ -3188,18 +3706,37 @@
                     renderCartPage();
                     break;
                 case 'checkout':
+                    if (!state.currentUser) {
+                        showAuthModal();
+                        return;
+                    }
                     renderCheckoutPage();
                     break;
                 case 'order-confirmation':
                     renderOrderConfirmation();
                     break;
+                case 'orders':
+                    if (!state.currentUser) {
+                        showAuthModal();
+                        return;
+                    }
+                    renderOrdersPage();
+                    break;
                 case 'sale':
                     renderSalePage();
                     break;
                 case 'account':
+                    if (!state.currentUser) {
+                        showAuthModal();
+                        return;
+                    }
                     renderAccountPage();
                     break;
                 case 'favorites':
+                    if (!state.currentUser) {
+                        showAuthModal();
+                        return;
+                    }
                     renderFavoritesPage();
                     break;
                 case 'contact':
@@ -3223,10 +3760,7 @@
                     <p>Your trusted source for fresh fruits, vegetables, and groceries</p>
                 </div>
                 
-                <div class="search-container active mb-4">
-                    <input type="text" class="search-input" placeholder="Search for fruits, vegetables, dairy..." id="homeSearch">
-                    <i class="fas fa-search search-icon"></i>
-                </div>
+                <!-- Search bar removed from header - now in sidebar -->
                 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 2rem;">
                     ${state.categories.slice(0, 6).map(cat => `
@@ -3254,7 +3788,7 @@
                         <div style="text-align: center;">
                             <i class="fas fa-truck" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
                             <h3 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">Free Delivery</h3>
-                            <p style="font-size: 0.75rem; opacity: 0.9;">On orders over MVR 1,500</p>
+                            <p style="font-size: 0.75rem; opacity: 0.9;">On orders over MVR ${state.deliverySettings.freeDeliveryThreshold || 1500}</p>
                         </div>
                         <div style="text-align: center;">
                             <i class="fas fa-leaf" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
@@ -3290,15 +3824,6 @@
                 e.preventDefault();
                 loadPage('products');
             });
-            
-            const homeSearch = document.getElementById('homeSearch');
-            homeSearch.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    state.currentSearch = homeSearch.value;
-                    state.currentCategory = null;
-                    loadPage('products');
-                }
-            });
         }
 
         function renderProductCards(products) {
@@ -3315,7 +3840,7 @@
                     </button>
                     
                     <div class="product-image">
-                        <img src="${product.image}" alt="${product.name}">
+                        <img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&fit=crop'">
                     </div>
                     
                     <div class="product-content">
@@ -3346,6 +3871,57 @@
                     </div>
                 </div>
             `}).join('');
+        }
+
+        function renderProductsPage() {
+            let filteredProducts = [...state.products];
+            
+            // Apply category filter
+            if (state.currentCategory) {
+                filteredProducts = filteredProducts.filter(product => product.category === state.currentCategory);
+            }
+            
+            // Apply search filter
+            if (state.currentSearch) {
+                const searchTerm = state.currentSearch.toLowerCase();
+                filteredProducts = filteredProducts.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.description.toLowerCase().includes(searchTerm) ||
+                    product.category.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Get category name
+            let categoryName = 'All Products';
+            if (state.currentCategory) {
+                const category = state.categories.find(c => c.id === state.currentCategory);
+                categoryName = category ? category.name : state.currentCategory;
+            }
+            
+            mainContent.innerHTML = `
+                <div class="page-header">
+                    <h1>${categoryName}</h1>
+                    <p>${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''} found</p>
+                </div>
+                
+                ${filteredProducts.length > 0 ? `
+                    <div class="products-grid">
+                        ${renderProductCards(filteredProducts)}
+                    </div>
+                ` : `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>No products found</h3>
+                        <p>Try adjusting your search or category filter</p>
+                        <button class="btn btn-primary" onclick="state.currentCategory = null; state.currentSearch = ''; loadPage('products');">
+                            <i class="fas fa-store"></i>
+                            View All Products
+                        </button>
+                    </div>
+                `}
+            `;
         }
 
         function renderFavoritesPage() {
@@ -3403,7 +3979,7 @@
             }).filter(item => item !== null);
             
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal > 1500 ? 0 : 150;
+            const shipping = subtotal > (state.deliverySettings.freeDeliveryThreshold || 1500) ? 0 : (state.deliverySettings.deliveryFee || 150);
             const tax = subtotal * 0.06;
             const total = subtotal + shipping + tax;
             
@@ -3418,7 +3994,7 @@
                         <div class="cart-items">
                             ${cartItems.map(item => `
                                 <div class="cart-item">
-                                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                                    <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&fit=crop'">
                                     
                                     <div class="cart-item-details">
                                         <h4 class="cart-item-title">${item.name}</h4>
@@ -3525,11 +4101,12 @@
             }
             
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal > 1500 ? 0 : 150;
+            const shipping = subtotal > (state.deliverySettings.freeDeliveryThreshold || 1500) ? 0 : (state.deliverySettings.deliveryFee || 150);
             const tax = subtotal * 0.06;
             const total = subtotal + shipping + tax;
             
-            const canCheckout = total >= 100;
+            const minOrder = state.deliverySettings.minOrder || 100;
+            const canCheckout = total >= minOrder;
             
             mainContent.innerHTML = `
                 <div class="page-header">
@@ -3543,7 +4120,7 @@
                             <i class="fas fa-exclamation-circle"></i>
                         </div>
                         <h3>Minimum Order Requirement</h3>
-                        <p>Orders must be at least MVR 100.00 to proceed with checkout.</p>
+                        <p>Orders must be at least MVR ${minOrder}.00 to proceed with checkout.</p>
                         <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin: 1rem 0;">
                             Current Total: ${formatCurrency(total)}
                         </p>
@@ -3560,12 +4137,17 @@
                             
                             <div class="form-group">
                                 <label class="form-label">Full Name *</label>
-                                <input type="text" class="form-input" placeholder="John Doe" id="fullName" required>
+                                <input type="text" class="form-input" value="${state.userData?.fullName || ''}" placeholder="John Doe" id="fullName" required>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">Phone Number *</label>
-                                <input type="tel" class="form-input" placeholder="+960 333 6699" id="phone" required>
+                                <input type="tel" class="form-input" value="${state.userData?.phone || ''}" placeholder="+960 333 6699" id="phone" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" class="form-input" value="${state.userData?.email || ''}" placeholder="email@example.com" id="email" required>
                             </div>
                             
                             <div class="form-group">
@@ -3654,22 +4236,21 @@
                 `}
             `;
             
-            document.getElementById('bankTransferNote').style.display = 'block';
-            
             if (canCheckout) {
                 document.getElementById('placeOrderBtn').addEventListener('click', () => {
                     const fullName = document.getElementById('fullName').value;
                     const phone = document.getElementById('phone').value;
+                    const email = document.getElementById('email').value;
                     const address = document.getElementById('address').value;
                     const instructions = document.getElementById('instructions').value;
                     
-                    if (!fullName || !phone || !address) {
+                    if (!fullName || !phone || !email || !address) {
                         alert('Please fill in all required fields (marked with *)');
                         return;
                     }
                     
                     const order = {
-                        customer: { fullName, phone, address, instructions },
+                        customer: { fullName, phone, email, address, instructions },
                         items: cartItems.map(item => ({
                             id: item.id,
                             name: item.name,
@@ -3683,13 +4264,13 @@
                         tax,
                         total,
                         status: 'pending',
-                        paymentStatus: 'pending',
+                        paymentStatus: 'pending_review',
                         createdAt: new Date().toISOString()
                     };
                     
                     state.pendingOrder = order;
                     
-                    const orderId = showBankTransferModal();
+                    const orderId = showBankTransferModal(generateOrderId(), total);
                     order.orderId = orderId;
                 });
             }
@@ -3725,6 +4306,11 @@
                         
                         <div class="summary-row">
                             <span>Payment Status</span>
+                            <span style="color: var(--warning); font-weight: 600;">Under Review</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Order Status</span>
                             <span style="color: var(--warning);">Pending</span>
                         </div>
                         
@@ -3745,6 +4331,9 @@
                             <li>We'll verify payment and process your order</li>
                             <li>You'll receive delivery confirmation via phone</li>
                         </ol>
+                        <p style="color: var(--warning); font-weight: 600; margin-top: 1rem; padding: 0.75rem; background: rgba(243, 156, 18, 0.1); border-radius: var(--radius-md);">
+                            <i class="fas fa-clock"></i> Your payment is under review. We'll update you once verified.
+                        </p>
                     </div>
                     
                     <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center;">
@@ -3753,13 +4342,110 @@
                             Back to Home
                         </button>
                         
-                        <button class="btn btn-outline" onclick="showBankTransferModal('${order.orderId}')">
+                        <button class="btn btn-outline" onclick="showBankTransferModal('${order.orderId}', ${order.total})">
                             <i class="fas fa-university"></i>
                             View Bank Details Again
+                        </button>
+                        
+                        <button class="btn btn-outline" onclick="loadPage('orders')">
+                            <i class="fas fa-shopping-bag"></i>
+                            View My Orders
                         </button>
                     </div>
                 </div>
             `;
+        }
+
+        async function renderOrdersPage() {
+            if (!state.currentUser) {
+                showAuthModal();
+                return;
+            }
+            
+            try {
+                const snapshot = await database.ref('orders').orderByChild('userId').equalTo(state.currentUser.uid).once('value');
+                const ordersData = snapshot.val();
+                const orders = ordersData ? Object.keys(ordersData).map(key => ({ id: key, ...ordersData[key] })) : [];
+                
+                // Sort by date (newest first)
+                orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                mainContent.innerHTML = `
+                    <div class="page-header">
+                        <h1>My Orders</h1>
+                        <p>${orders.length} order${orders.length !== 1 ? 's' : ''} placed</p>
+                    </div>
+                    
+                    ${orders.length > 0 ? `
+                        <div class="orders-list">
+                            ${orders.map(order => `
+                                <div class="order-card">
+                                    <div class="order-header">
+                                        <div>
+                                            <div class="order-id">Order #${order.orderId || order.id.substring(0, 8).toUpperCase()}</div>
+                                            <div class="order-date">${new Date(order.createdAt).toLocaleDateString()} at ${new Date(order.createdAt).toLocaleTimeString()}</div>
+                                        </div>
+                                        <div>
+                                            <span class="order-status status-${order.status}">
+                                                ${order.status.replace('_', ' ').toUpperCase()}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="color: var(--gray-600); margin: 1rem 0; padding: 1rem; background: var(--gray-100); border-radius: var(--radius-md);">
+                                        <div><strong>Payment Status:</strong> 
+                                            <span style="color: ${order.paymentStatus === 'pending_review' ? 'var(--warning)' : order.paymentStatus === 'completed' ? 'var(--success)' : 'var(--danger)'}; font-weight: 600;">
+                                                ${order.paymentStatus === 'pending_review' ? 'Under Review' : order.paymentStatus.toUpperCase()}
+                                            </span>
+                                        </div>
+                                        <div><strong>Delivery Address:</strong> ${order.customer?.address || 'N/A'}</div>
+                                    </div>
+                                    
+                                    <div class="order-items">
+                                        ${order.items.map(item => `
+                                            <div class="order-item">
+                                                <div>${item.quantity} x ${item.name}</div>
+                                                <div>${formatCurrency(item.price * item.quantity)}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    
+                                    <div class="order-total">
+                                        <span>Total</span>
+                                        <span>${formatCurrency(order.total)}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <h3>No orders yet</h3>
+                            <p>Start shopping and place your first order</p>
+                            <button class="btn btn-primary" onclick="loadPage('products')">
+                                <i class="fas fa-store"></i>
+                                Browse Products
+                            </button>
+                        </div>
+                    `}
+                `;
+            } catch (error) {
+                mainContent.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon" style="background: linear-gradient(135deg, var(--danger) 0%, #e74c3c 100%);">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Error loading orders</h3>
+                        <p>${error.message}</p>
+                        <button class="btn btn-primary" onclick="renderOrdersPage()">
+                            <i class="fas fa-redo"></i>
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            }
         }
 
         function renderSalePage() {
@@ -3827,21 +4513,62 @@
                     </div>
                     
                     <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" value="${state.userData?.fullName || ''}" id="accountName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" value="${state.userData?.email || ''}" id="accountEmail" readonly>
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="form-label">Phone Number</label>
-                        <input type="tel" class="form-input" placeholder="+960 333 6699">
+                        <input type="tel" class="form-input" value="${state.userData?.phone || ''}" id="accountPhone">
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label">Default Delivery Address</label>
-                        <textarea class="form-input" placeholder="Your default address" rows="3"></textarea>
+                        <textarea class="form-input" placeholder="Your default address" rows="3" id="accountAddress"></textarea>
                     </div>
                     
-                    <button class="btn btn-primary" style="width: 100%;">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="updateAccount()">
                         <i class="fas fa-save"></i>
                         Save Preferences
                     </button>
+                    
+                    <button class="btn btn-outline mt-2" style="width: 100%;" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
                 </div>
             `;
+        }
+
+        async function updateAccount() {
+            const name = document.getElementById('accountName').value;
+            const phone = document.getElementById('accountPhone').value;
+            const address = document.getElementById('accountAddress').value;
+            
+            try {
+                await database.ref(`users/${state.currentUser.uid}`).update({
+                    fullName: name,
+                    phone: phone,
+                    defaultAddress: address,
+                    updatedAt: new Date().toISOString()
+                });
+                
+                // Update local state
+                state.userData.fullName = name;
+                state.userData.phone = phone;
+                state.userData.defaultAddress = address;
+                
+                updateUserInterface(true);
+                updateSidebarUserInfo();
+                showNotification('Account updated successfully!');
+            } catch (error) {
+                showNotification('Error updating account: ' + error.message, 'error');
+            }
         }
 
         function renderContactPage() {
@@ -3980,13 +4707,28 @@
                 return;
             }
             
-            showNotification('Message sent successfully! We\'ll get back to you soon.');
-            
-            document.getElementById('contactName').value = '';
-            document.getElementById('contactEmail').value = '';
-            document.getElementById('contactPhone').value = '';
-            document.getElementById('contactSubject').value = '';
-            document.getElementById('contactMessage').value = '';
+            // Save contact message to database
+            database.ref('contactMessages').push({
+                name,
+                email,
+                phone,
+                subject,
+                message,
+                createdAt: new Date().toISOString(),
+                status: 'unread'
+            })
+            .then(() => {
+                showNotification('Message sent successfully! We\'ll get back to you soon.');
+                
+                document.getElementById('contactName').value = '';
+                document.getElementById('contactEmail').value = '';
+                document.getElementById('contactPhone').value = '';
+                document.getElementById('contactSubject').value = '';
+                document.getElementById('contactMessage').value = '';
+            })
+            .catch(error => {
+                showNotification('Error sending message: ' + error.message, 'error');
+            });
         }
 
         // ===== UTILITY FUNCTIONS =====
@@ -4114,13 +4856,13 @@
             window.print();
         }
 
-        function showNotification(message) {
+        function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
                 top: 1rem;
                 right: 1rem;
-                background: var(--dark);
+                background: ${type === 'error' ? 'var(--danger)' : 'var(--dark)'};
                 color: white;
                 padding: 1rem 1.5rem;
                 border-radius: var(--radius-md);
@@ -4129,6 +4871,7 @@
                 transform: translateX(120%);
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 max-width: 300px;
+                font-weight: 500;
             `;
             notification.textContent = message;
             
@@ -4159,11 +4902,68 @@
         window.showBankTransferModal = showBankTransferModal;
         window.showMapModal = showMapModal;
         window.getDirections = getDirections;
-        window.getDirectionsToStore = getDirectionsToStore;
         window.showAboutUsModal = showAboutUsModal;
         window.submitContactForm = submitContactForm;
         window.toggleFavorite = toggleFavorite;
         window.clearAllFavorites = clearAllFavorites;
+        window.showAuthModal = showAuthModal;
+        window.handleLogout = handleLogout;
+        window.updateAccount = updateAccount;
     </script>
+   <!-- In the main HTML file, update the showMapModal function to include iframe -->
+<script>
+function showMapModal() {
+    mapModal.classList.add('active');
+    
+    // Update the map content to include iframe
+    const mapContent = document.querySelector('.map-content');
+    mapContent.innerHTML = `
+        <button class="modal-close" id="mapModalClose">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <!-- Google Maps iframe -->
+        <div style="width: 100%; height: 400px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; overflow: hidden;">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4747.891462512013!2d73.43478827569665!3d0.7510560992416458!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b4a77c6b334236b%3A0x643c7c474c910b2c!2sALEELA%20TRADE!5e1!3m2!1sen!2smv!4v1768677267413!5m2!1sen!2smv" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        
+        <div class="map-info">
+            <h3 class="map-title">Aleela Trade Store Location</h3>
+            <p><strong>Address:</strong> Male, Male City, Maldives</p>
+            <p><strong>Phone:</strong> +960 7468757</p>
+            <p><strong>Hours:</strong> 7:00 AM - 11:00 PM Daily</p>
+            
+            <div class="map-actions">
+                <a href="https://maps.google.com/?q=0.7510560992416458,73.43478827569665" 
+                   target="_blank" 
+                   class="btn btn-primary">
+                    <i class="fas fa-directions"></i>
+                    Get Directions
+                </a>
+                <button class="btn btn-outline" id="closeMapBtn">
+                    Close
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Re-attach event listeners
+    document.getElementById('mapModalClose').addEventListener('click', () => {
+        mapModal.classList.remove('active');
+    });
+    
+    document.getElementById('closeMapBtn').addEventListener('click', () => {
+        mapModal.classList.remove('active');
+    });
+}
+</script>
 </body>
 </html>
