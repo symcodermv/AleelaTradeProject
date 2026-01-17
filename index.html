@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aleela Trade</title>
+    <title>Aleela Trade - Online Grocery Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqdg6ePdCGvlzHpaEFgOUFPaHEsPYIApw&callback=initMap&libraries=places" async defer></script>
     <style>
         /* ===== 2026 MODERN DESIGN SYSTEM ===== */
         :root {
@@ -339,7 +341,7 @@
             color: white;
         }
 
-        .cart-badge {
+        .cart-badge, .favorites-badge {
             position: absolute;
             top: -4px;
             right: -4px;
@@ -633,6 +635,36 @@
             font-size: 0.75rem;
             font-weight: 600;
             z-index: 1;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-400);
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            z-index: 1;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .favorite-btn:hover {
+            color: var(--danger);
+            transform: scale(1.1);
+        }
+
+        .favorite-btn.active {
+            color: var(--danger);
+            background: rgba(231, 76, 60, 0.1);
         }
 
         .product-image {
@@ -1150,6 +1182,61 @@
             color: var(--danger);
             cursor: pointer;
             font-size: 1.25rem;
+        }
+
+        /* ===== MAP MODAL ===== */
+        .map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1002;
+            overflow-y: auto;
+        }
+
+        .map-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 95%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            margin: 1rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .map-info {
+            padding: 1.5rem;
+        }
+
+        .map-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .map-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         /* ===== BUTTONS - 2026 STYLE ===== */
@@ -1682,6 +1769,122 @@
             border-left: 4px solid var(--accent) !important;
         }
 
+        /* ===== CONTACT US STYLES ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .contact-info-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all var(--transition-normal);
+        }
+
+        .contact-info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .contact-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .contact-card-text {
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .contact-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+
+        .contact-card-link:hover {
+            color: var(--primary-dark);
+            transform: translateX(4px);
+        }
+
+        .business-hours {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+        }
+
+        .hours-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .hours-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hours-row:last-child {
+            border-bottom: none;
+        }
+
+        .hours-day {
+            font-weight: 600;
+        }
+
+        .hours-time {
+            opacity: 0.9;
+        }
+
+        /* ===== FAVORITES PAGE ===== */
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
         /* ===== UTILITIES ===== */
         .hidden {
             display: none !important;
@@ -1764,7 +1967,20 @@
                         <span class="bank-label">Bank Name:</span>
                         <span class="bank-value">Bank of Maldives</span>
                     </div>
-                   
+                    <div class="bank-info-item">
+                        <span class="bank-label">SWIFT Code:</span>
+                        <span class="bank-value">BMLFMVMV</span>
+                    </div>
+                    <div class="bank-info-item">
+                        <span class="bank-label">Reference:</span>
+                        <span class="bank-value">
+                            <span id="orderReference">ORDER-${generateOrderId()}</span>
+                            <button class="copy-btn" id="copyReferenceBtn">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </span>
+                    </div>
                 </div>
                 
                 <div class="upload-receipt">
@@ -1801,6 +2017,29 @@
         </div>
     </div>
 
+    <!-- Map Modal -->
+    <div class="map-modal" id="mapModal">
+        <div class="map-content">
+            <button class="modal-close" id="mapModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="map"></div>
+            <div class="map-info">
+                <h3 class="map-title">Aleela Trade Store Locations</h3>
+                <p>Visit our stores or get directions:</p>
+                <div class="map-actions">
+                    <button class="btn btn-primary" id="getDirectionsBtn">
+                        <i class="fas fa-directions"></i>
+                        Get Directions
+                    </button>
+                    <button class="btn btn-outline" id="closeMapBtn">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -1824,6 +2063,10 @@
                 <div class="header-actions">
                     <button class="action-btn" id="searchToggle">
                         <i class="fas fa-search"></i>
+                    </button>
+                    <button class="action-btn" id="favoritesBtn">
+                        <i class="fas fa-heart"></i>
+                        <span class="favorites-badge" id="favoritesBadge">0</span>
                     </button>
                     <button class="action-btn" id="cartBtn">
                         <i class="fas fa-shopping-cart"></i>
@@ -1885,9 +2128,13 @@
                     <i class="fas fa-tag"></i>
                     <span>Weekly Specials</span>
                 </a>
-                <a href="#" class="nav-link" data-page="recipes">
-                    <i class="fas fa-utensils"></i>
-                    <span>Recipes</span>
+                <a href="#" class="nav-link" data-page="favorites">
+                    <i class="fas fa-heart"></i>
+                    <span>My Favorites</span>
+                </a>
+                <a href="#" class="nav-link" id="storeLocationsLink">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Store Locations</span>
                 </a>
                 <a href="#" class="nav-link" data-page="account">
                     <i class="fas fa-user"></i>
@@ -1913,9 +2160,9 @@
                 <div class="footer-section">
                     <h3>Aleela Trade</h3>
                     <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Store Locations</a></li>
-                        <li><a href="#">Careers</a></li>
+                        <li><a href="#" id="aboutUsLink">About Us</a></li>
+                        <li><a href="#" id="footerStoreLink">Store Locations</a></li>
+                        <li><a href="#" id="contactUsFooter">Contact Us</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
@@ -1923,7 +2170,7 @@
                 <div class="footer-section">
                     <h3>Customer Service</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#" data-page="contact">Contact Us</a></li>
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">Delivery Info</a></li>
                         <li><a href="#">Returns & Refunds</a></li>
@@ -1934,7 +2181,7 @@
                     <h3>Contact Info</h3>
                     <ul class="footer-links">
                         <li>Aleela Trade, Male' City</li>
-                        <li>+960 333 6699</li>
+                        <li>+960 7468757</li>
                         <li>info@aleelatrade.com.mv</li>
                         <li>Open Daily: 7:00 AM - 11:00 PM</li>
                     </ul>
@@ -1973,6 +2220,7 @@
         // ===== APP STATE =====
         let state = {
             cart: JSON.parse(localStorage.getItem('cart')) || {},
+            favorites: JSON.parse(localStorage.getItem('favorites')) || [],
             currentPage: 'home',
             currentCategory: null,
             currentSearch: '',
@@ -1985,9 +2233,7 @@
                 { id: 'dairy', name: 'Dairy & Eggs', icon: 'fas fa-egg' },
                 { id: 'meat', name: 'Meat & Poultry', icon: 'fas fa-drumstick-bite' },
                 { id: 'bakery', name: 'Bakery', icon: 'fas fa-bread-slice' },
-                { id: 'beverages', name: 'Beverages', icon: 'fas fa-wine-bottle' },
-                { id: 'snacks', name: 'Snacks', icon: 'fas fa-cookie' },
-                { id: 'frozen', name: 'Frozen Foods', icon: 'fas fa-snowflake' }
+                { id: 'beverages', name: 'Beverages', icon: 'fas fa-wine-bottle' }
             ],
             sliderImages: [
                 {
@@ -2006,7 +2252,27 @@
                     description: 'Healthy organic options available'
                 }
             ],
-            currentSlide: 0
+            currentSlide: 0,
+            map: null,
+            storeLocations: [
+                {
+                    name: "Aleela Trade Main Store",
+                    address: "Majeedhee Magu, Male' City, Maldives",
+                    lat: 4.1755,
+                    lng: 73.5093,
+                    phone: "+960 333 6699",
+                    hours: "7:00 AM - 11:00 PM"
+                },
+                {
+                    name: "Aleela Trade Hulhumale' Branch",
+                    address: "Hulhumale' Central Market, Maldives",
+                    lat: 4.2167,
+                    lng: 73.5333,
+                    phone: "+960 333 6688",
+                    hours: "8:00 AM - 10:00 PM"
+                }
+            ],
+            pendingOrder: null
         };
 
         // ===== DOM ELEMENTS =====
@@ -2020,6 +2286,8 @@
         const searchInput = document.getElementById('searchInput');
         const cartBtn = document.getElementById('cartBtn');
         const cartBadge = document.getElementById('cartBadge');
+        const favoritesBtn = document.getElementById('favoritesBtn');
+        const favoritesBadge = document.getElementById('favoritesBadge');
         const currentYear = document.getElementById('currentYear');
         const productModal = document.getElementById('productModal');
         const modalClose = document.getElementById('modalClose');
@@ -2035,6 +2303,14 @@
         const removeFile = document.getElementById('removeFile');
         const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
         const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+        const mapModal = document.getElementById('mapModal');
+        const mapModalClose = document.getElementById('mapModalClose');
+        const closeMapBtn = document.getElementById('closeMapBtn');
+        const getDirectionsBtn = document.getElementById('getDirectionsBtn');
+        const storeLocationsLink = document.getElementById('storeLocationsLink');
+        const footerStoreLink = document.getElementById('footerStoreLink');
+        const aboutUsLink = document.getElementById('aboutUsLink');
+        const contactUsFooter = document.getElementById('contactUsFooter');
 
         // ===== CURRENCY FORMATTER =====
         function formatCurrency(amount) {
@@ -2081,6 +2357,12 @@
                 closeMobileNav();
             });
             
+            // Favorites button
+            favoritesBtn.addEventListener('click', () => {
+                loadPage('favorites');
+                closeMobileNav();
+            });
+            
             // Search input
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
@@ -2103,9 +2385,33 @@
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const page = link.dataset.page;
-                    loadPage(page);
-                    closeMobileNav();
+                    if (page) {
+                        loadPage(page);
+                        closeMobileNav();
+                    }
                 });
+            });
+            
+            // Store locations links
+            storeLocationsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showMapModal();
+                closeMobileNav();
+            });
+            
+            footerStoreLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showMapModal();
+            });
+            
+            aboutUsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showAboutUsModal();
+            });
+            
+            contactUsFooter.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('contact');
             });
             
             // Category buttons
@@ -2132,6 +2438,20 @@
                 bankTransferModal.classList.remove('active');
             });
             
+            // Map modal close
+            mapModalClose.addEventListener('click', () => {
+                mapModal.classList.remove('active');
+            });
+            
+            closeMapBtn.addEventListener('click', () => {
+                mapModal.classList.remove('active');
+            });
+            
+            // Get directions button
+            getDirectionsBtn.addEventListener('click', () => {
+                getDirections();
+            });
+            
             // Close modals when clicking outside
             productModal.addEventListener('click', (e) => {
                 if (e.target === productModal) {
@@ -2145,11 +2465,18 @@
                 }
             });
             
+            mapModal.addEventListener('click', (e) => {
+                if (e.target === mapModal) {
+                    mapModal.classList.remove('active');
+                }
+            });
+            
             // Close modals with Escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     productModal.classList.remove('active');
                     bankTransferModal.classList.remove('active');
+                    mapModal.classList.remove('active');
                 }
             });
             
@@ -2171,6 +2498,125 @@
             
             // Confirm payment
             confirmPaymentBtn.addEventListener('click', confirmPayment);
+        }
+
+        // ===== MAP FUNCTIONS =====
+        function initMap() {
+            const defaultLocation = { lat: 4.1755, lng: 73.5093 };
+            
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: defaultLocation,
+                mapTypeControl: true,
+                streetViewControl: true,
+                fullscreenControl: true
+            });
+            
+            state.map = map;
+            
+            state.storeLocations.forEach(location => {
+                const marker = new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    title: location.name,
+                    animation: google.maps.Animation.DROP
+                });
+                
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="padding: 1rem;">
+                            <h3 style="margin: 0 0 0.5rem 0; color: var(--primary);">${location.name}</h3>
+                            <p style="margin: 0.25rem 0;">${location.address}</p>
+                            <p style="margin: 0.25rem 0;"><strong>Phone:</strong> ${location.phone}</p>
+                            <p style="margin: 0.25rem 0;"><strong>Hours:</strong> ${location.hours}</p>
+                            <button onclick="getDirectionsToStore(${location.lat}, ${location.lng})" 
+                                    style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; margin-top: 0.5rem;">
+                                Get Directions
+                            </button>
+                        </div>
+                    `
+                });
+                
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+            });
+        }
+
+        function showMapModal() {
+            mapModal.classList.add('active');
+            
+            if (!state.map) {
+                setTimeout(initMap, 100);
+            }
+        }
+
+        function getDirections() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    const store = state.storeLocations[0];
+                    const url = `https://www.google.com/maps/dir/${userLat},${userLng}/${store.lat},${store.lng}`;
+                    window.open(url, '_blank');
+                }, () => {
+                    const store = state.storeLocations[0];
+                    const url = `https://www.google.com/maps/dir//${store.lat},${store.lng}`;
+                    window.open(url, '_blank');
+                });
+            } else {
+                const store = state.storeLocations[0];
+                const url = `https://www.google.com/maps/dir//${store.lat},${store.lng}`;
+                window.open(url, '_blank');
+            }
+        }
+
+        function getDirectionsToStore(lat, lng) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    const url = `https://www.google.com/maps/dir/${userLat},${userLng}/${lat},${lng}`;
+                    window.open(url, '_blank');
+                }, () => {
+                    const url = `https://www.google.com/maps/dir//${lat},${lng}`;
+                    window.open(url, '_blank');
+                });
+            } else {
+                const url = `https://www.google.com/maps/dir//${lat},${lng}`;
+                window.open(url, '_blank');
+            }
+        }
+
+        function showAboutUsModal() {
+            modalContent.innerHTML = `
+                <div class="modal-body">
+                    <h2 class="modal-title">About Aleela Trade</h2>
+                    <p style="color: var(--gray-600); line-height: 1.6; margin-bottom: 1.5rem;">
+                        Aleela Trade is your trusted partner for fresh groceries in the Maldives. 
+                        We bring you the finest selection of fruits, vegetables, dairy, meat, and 
+                        bakery items directly from farms to your doorstep.
+                    </p>
+                    
+                    <div style="background: var(--gray-100); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: var(--dark);">Our Mission</h3>
+                        <p style="color: var(--gray-600); line-height: 1.6;">
+                            To provide fresh, high-quality groceries with convenient home delivery, 
+                            making healthy eating accessible to everyone in the Maldives.
+                        </p>
+                    </div>
+                    
+                    <div style="background: var(--gray-100); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: var(--dark);">Store Locations</h3>
+                        <button class="btn btn-primary" onclick="showMapModal(); productModal.classList.remove('active');" style="width: 100%;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            View Store Locations
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            productModal.classList.add('active');
         }
 
         // ===== SLIDER FUNCTIONS =====
@@ -2198,6 +2644,43 @@
             `;
         }
 
+        function initializeSlider() {
+            const slider = document.querySelector('.slider');
+            const dots = document.querySelectorAll('.slider-dot');
+            let currentSlide = 0;
+            const totalSlides = state.sliderImages.length;
+            
+            function updateSlider() {
+                if (slider) {
+                    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+                    
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentSlide);
+                    });
+                }
+            }
+            
+            let slideInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }, 5000);
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    clearInterval(slideInterval);
+                    currentSlide = parseInt(dot.dataset.slide);
+                    updateSlider();
+                    
+                    slideInterval = setInterval(() => {
+                        currentSlide = (currentSlide + 1) % totalSlides;
+                        updateSlider();
+                    }, 5000);
+                });
+            });
+            
+            updateSlider();
+        }
+
         // ===== SIDEBAR ANIMATION FUNCTIONS =====
         function toggleMobileNav() {
             const isActive = menuToggle.classList.toggle('active');
@@ -2210,23 +2693,17 @@
         }
 
         function openMobileNav() {
-            // Show overlay
             sidebarOverlay.classList.add('active');
-            
-            // Open sidebar
             mobileNav.classList.add('active');
             
-            // Animate menu bars
             const bars = menuToggle.querySelectorAll('span');
             bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
             bars[1].style.opacity = '0';
             bars[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
             
-            // Animate sidebar content sequentially
             const categoryBtns = document.querySelectorAll('.category-btn');
             const navLinks = document.querySelectorAll('.nav-link');
             
-            // Animate category buttons
             categoryBtns.forEach((btn, index) => {
                 setTimeout(() => {
                     btn.style.opacity = '1';
@@ -2234,7 +2711,6 @@
                 }, 100 + (index * 50));
             });
             
-            // Animate nav links
             navLinks.forEach((link, index) => {
                 setTimeout(() => {
                     link.style.opacity = '1';
@@ -2244,20 +2720,16 @@
         }
 
         function closeMobileNav() {
-            // Reset menu bars
             const bars = menuToggle.querySelectorAll('span');
             bars[0].style.transform = 'none';
             bars[1].style.opacity = '1';
             bars[2].style.transform = 'none';
             
-            // Hide overlay
             sidebarOverlay.classList.remove('active');
             
-            // Animate sidebar content out
             const categoryBtns = document.querySelectorAll('.category-btn');
             const navLinks = document.querySelectorAll('.nav-link');
             
-            // Reverse animation for nav links
             navLinks.forEach((link, index) => {
                 setTimeout(() => {
                     link.style.opacity = '0';
@@ -2265,7 +2737,6 @@
                 }, (navLinks.length - 1 - index) * 30);
             });
             
-            // Reverse animation for category buttons
             categoryBtns.forEach((btn, index) => {
                 setTimeout(() => {
                     btn.style.opacity = '0';
@@ -2273,7 +2744,6 @@
                 }, 100 + ((categoryBtns.length - 1 - index) * 30));
             });
             
-            // Close sidebar after animations
             setTimeout(() => {
                 mobileNav.classList.remove('active');
             }, 400);
@@ -2292,6 +2762,7 @@
                         addSampleProducts();
                     } else {
                         updateCartCount();
+                        updateFavoritesCount();
                         if (state.currentPage) {
                             loadPage(state.currentPage);
                         }
@@ -2498,10 +2969,38 @@
                 }
             ];
 
-            // Add each product to Firebase
             sampleProducts.forEach(product => {
                 database.ref('products').push(product);
             });
+        }
+
+        // ===== FAVORITES SYSTEM =====
+        function toggleFavorite(productId) {
+            const index = state.favorites.indexOf(productId);
+            if (index === -1) {
+                state.favorites.push(productId);
+            } else {
+                state.favorites.splice(index, 1);
+            }
+            
+            localStorage.setItem('favorites', JSON.stringify(state.favorites));
+            updateFavoritesCount();
+            
+            if (state.currentPage === 'favorites') {
+                renderFavoritesPage();
+            }
+            
+            showNotification(index === -1 ? 'Added to favorites' : 'Removed from favorites');
+        }
+
+        function isFavorite(productId) {
+            return state.favorites.includes(productId);
+        }
+
+        function updateFavoritesCount() {
+            const count = state.favorites.length;
+            favoritesBadge.textContent = count;
+            favoritesBadge.style.display = count > 0 ? 'flex' : 'none';
         }
 
         // ===== PRODUCT DETAILS MODAL =====
@@ -2548,9 +3047,9 @@
                             <i class="fas fa-cart-plus"></i>
                             Add to Cart
                         </button>
-                        <button class="btn btn-outline" onclick="productModal.classList.remove('active')">
-                            <i class="fas fa-shopping-bag"></i>
-                            Continue Shopping
+                        <button class="btn ${isFavorite(product.id) ? 'btn-danger' : 'btn-outline'}" onclick="toggleFavorite('${product.id}'); showProductDetails('${product.id}');">
+                            <i class="fas ${isFavorite(product.id) ? 'fa-heart' : 'fa-heart'}"></i>
+                            ${isFavorite(product.id) ? 'Remove Favorite' : 'Add to Favorites'}
                         </button>
                     </div>
                 </div>
@@ -2560,18 +3059,24 @@
         }
 
         // ===== BANK TRANSFER FUNCTIONS =====
-        function showBankTransferModal() {
-            // Reset file upload
+        function generateOrderId() {
+            return 'AL' + Date.now().toString().slice(-8);
+        }
+
+        function showBankTransferModal(orderId) {
             receiptFile.value = '';
             filePreview.style.display = 'none';
             uploadArea.style.display = 'block';
             
-            // Reset copy button
             copyAccountBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
             copyAccountBtn.classList.remove('copied');
             
-            // Show modal
+            const reference = orderId || generateOrderId();
+            document.getElementById('orderReference').textContent = reference;
+            
             bankTransferModal.classList.add('active');
+            
+            return reference;
         }
 
         function copyAccountNumber() {
@@ -2582,7 +3087,6 @@
                     copyAccountBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
                     copyAccountBtn.classList.add('copied');
                     
-                    // Reset button after 2 seconds
                     setTimeout(() => {
                         copyAccountBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
                         copyAccountBtn.classList.remove('copied');
@@ -2598,15 +3102,13 @@
             const file = event.target.files[0];
             if (!file) return;
             
-            // Validate file size (5MB max)
-            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            const maxSize = 5 * 1024 * 1024;
             if (file.size > maxSize) {
                 alert('File size exceeds 5MB limit. Please choose a smaller file.');
                 receiptFile.value = '';
                 return;
             }
             
-            // Validate file type
             const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
             if (!validTypes.includes(file.type)) {
                 alert('Invalid file type. Please upload JPG, PNG, or PDF files only.');
@@ -2614,7 +3116,6 @@
                 return;
             }
             
-            // Display file info
             fileName.textContent = file.name;
             fileSize.textContent = formatFileSize(file.size);
             filePreview.style.display = 'flex';
@@ -2635,35 +3136,41 @@
                 return;
             }
             
-            // Here you would typically upload the file to a server
-            // For now, we'll just simulate a successful upload
-            showNotification('Payment confirmed! Receipt uploaded successfully.');
-            bankTransferModal.classList.remove('active');
-            
-            // Continue with order placement
-            if (state.pendingOrder) {
-                placeOrderWithBankTransfer();
-            }
-        }
-
-        function placeOrderWithBankTransfer() {
-            // Your order placement logic here
             const order = state.pendingOrder;
+            const orderId = generateOrderId();
             
-            database.ref('orders').push(order)
-                .then((ref) => {
-                    // Clear cart
-                    state.cart = {};
-                    localStorage.removeItem('cart');
-                    updateCartCount();
-                    
-                    // Redirect to confirmation
-                    state.orderDetails = { ...order, id: ref.key };
-                    loadPage('order-confirmation');
-                })
-                .catch((error) => {
-                    alert('Error placing order: ' + error.message);
-                });
+            database.ref('orders').push({
+                ...order,
+                orderId: orderId,
+                paymentStatus: 'pending',
+                paymentMethod: 'bank_transfer',
+                bankTransfer: {
+                    accountNumber: '7712440335001',
+                    accountName: 'Aleela Trade',
+                    bankName: 'Bank of Maldives',
+                    reference: orderId,
+                    receiptUploaded: true,
+                    receiptFileName: receiptFile.files[0].name,
+                    receiptFileSize: receiptFile.files[0].size,
+                    receiptFileType: receiptFile.files[0].type,
+                    uploadedAt: new Date().toISOString()
+                },
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            })
+            .then((ref) => {
+                state.cart = {};
+                localStorage.removeItem('cart');
+                updateCartCount();
+                
+                state.orderDetails = { ...order, id: ref.key, orderId: orderId };
+                bankTransferModal.classList.remove('active');
+                loadPage('order-confirmation');
+                showNotification('Order placed successfully! Bank details saved.');
+            })
+            .catch((error) => {
+                alert('Error placing order: ' + error.message);
+            });
         }
 
         // ===== PAGE MANAGEMENT =====
@@ -2689,11 +3196,11 @@
                 case 'sale':
                     renderSalePage();
                     break;
-                case 'recipes':
-                    renderRecipesPage();
-                    break;
                 case 'account':
                     renderAccountPage();
+                    break;
+                case 'favorites':
+                    renderFavoritesPage();
                     break;
                 case 'contact':
                     renderContactPage();
@@ -2768,10 +3275,8 @@
                 </div>
             `;
             
-            // Initialize slider
             initializeSlider();
             
-            // Add event listeners
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -2796,120 +3301,18 @@
             });
         }
 
-        function initializeSlider() {
-            const slider = document.querySelector('.slider');
-            const dots = document.querySelectorAll('.slider-dot');
-            let currentSlide = 0;
-            const totalSlides = state.sliderImages.length;
-            
-            function updateSlider() {
-                if (slider) {
-                    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-                    
-                    dots.forEach((dot, index) => {
-                        dot.classList.toggle('active', index === currentSlide);
-                    });
-                }
-            }
-            
-            // Auto slide every 5 seconds
-            let slideInterval = setInterval(() => {
-                currentSlide = (currentSlide + 1) % totalSlides;
-                updateSlider();
-            }, 5000);
-            
-            // Dot click events
-            dots.forEach(dot => {
-                dot.addEventListener('click', () => {
-                    clearInterval(slideInterval);
-                    currentSlide = parseInt(dot.dataset.slide);
-                    updateSlider();
-                    
-                    // Restart auto slide
-                    slideInterval = setInterval(() => {
-                        currentSlide = (currentSlide + 1) % totalSlides;
-                        updateSlider();
-                    }, 5000);
-                });
-            });
-            
-            // Initialize
-            updateSlider();
-        }
-
-        function renderProductsPage() {
-            let filteredProducts = [...state.products];
-            
-            // Apply category filter
-            if (state.currentCategory) {
-                filteredProducts = filteredProducts.filter(product => 
-                    product.category === state.currentCategory
-                );
-            }
-            
-            // Apply search filter
-            if (state.currentSearch) {
-                const searchTerm = state.currentSearch.toLowerCase();
-                filteredProducts = filteredProducts.filter(product =>
-                    product.name.toLowerCase().includes(searchTerm) ||
-                    product.description.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            const categoryName = state.currentCategory 
-                ? state.categories.find(c => c.id === state.currentCategory)?.name 
-                : 'All Products';
-            
-            mainContent.innerHTML = `
-                <div class="page-header">
-                    <h1>${categoryName}</h1>
-                    <p>${filteredProducts.length} products found</p>
-                </div>
-                
-                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.5rem;">
-                    ${state.categories.map(cat => `
-                        <button class="category-btn ${state.currentCategory === cat.id || (!state.currentCategory && cat.id === 'all') ? 'active' : ''}" 
-                                data-category="${cat.id}" style="white-space: nowrap; padding: 0.5rem 0.75rem; font-size: 0.875rem;">
-                            <span>${cat.name}</span>
-                        </button>
-                    `).join('')}
-                </div>
-                
-                ${filteredProducts.length > 0 ? `
-                    <div class="products-grid">
-                        ${renderProductCards(filteredProducts)}
-                    </div>
-                ` : `
-                    <div class="empty-state">
-                        <div class="empty-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <h3>No products found</h3>
-                        <p>Try adjusting your search or browse different categories</p>
-                        <button class="btn btn-primary" onclick="loadPage('home')">
-                            Back to Home
-                        </button>
-                    </div>
-                `}
-            `;
-            
-            // Add event listeners to category buttons
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const category = btn.dataset.category;
-                    state.currentCategory = category === 'all' ? null : category;
-                    loadPage('products');
-                });
-            });
-        }
-
         function renderProductCards(products) {
             return products.map(product => {
                 const categoryClass = `category-${product.category}`;
+                const isFav = isFavorite(product.id);
                 return `
                 <div class="product-card" data-id="${product.id}">
                     ${product.original_price > product.price ? 
                         '<div class="product-badge">SALE</div>' : ''}
+                    
+                    <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${product.id}')">
+                        <i class="fas ${isFav ? 'fa-heart' : 'fa-heart'}"></i>
+                    </button>
                     
                     <div class="product-image">
                         <img src="${product.image}" alt="${product.name}">
@@ -2943,6 +3346,54 @@
                     </div>
                 </div>
             `}).join('');
+        }
+
+        function renderFavoritesPage() {
+            const favoriteProducts = state.products.filter(product => 
+                state.favorites.includes(product.id)
+            );
+            
+            mainContent.innerHTML = `
+                <div class="page-header">
+                    <h1>My Favorites</h1>
+                    <p>${favoriteProducts.length} saved item${favoriteProducts.length !== 1 ? 's' : ''}</p>
+                </div>
+                
+                ${favoriteProducts.length > 0 ? `
+                    <div class="products-grid">
+                        ${renderProductCards(favoriteProducts)}
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn btn-outline" onclick="clearAllFavorites()">
+                            <i class="fas fa-trash"></i>
+                            Clear All Favorites
+                        </button>
+                    </div>
+                ` : `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>No favorites yet</h3>
+                        <p>Start adding your favorite products by clicking the heart icon</p>
+                        <button class="btn btn-primary" onclick="loadPage('products')">
+                            <i class="fas fa-store"></i>
+                            Browse Products
+                        </button>
+                    </div>
+                `}
+            `;
+        }
+
+        function clearAllFavorites() {
+            if (confirm('Are you sure you want to remove all items from favorites?')) {
+                state.favorites = [];
+                localStorage.setItem('favorites', JSON.stringify(state.favorites));
+                updateFavoritesCount();
+                renderFavoritesPage();
+                showNotification('All favorites cleared');
+            }
         }
 
         function renderCartPage() {
@@ -3078,63 +3529,53 @@
             const tax = subtotal * 0.06;
             const total = subtotal + shipping + tax;
             
+            const canCheckout = total >= 100;
+            
             mainContent.innerHTML = `
                 <div class="page-header">
                     <h1>Checkout</h1>
                     <p>Complete your grocery order</p>
                 </div>
                 
+                ${!canCheckout ? `
+                    <div class="empty-state">
+                        <div class="empty-icon" style="background: linear-gradient(135deg, var(--warning) 0%, #f39c12 100%);">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <h3>Minimum Order Requirement</h3>
+                        <p>Orders must be at least MVR 100.00 to proceed with checkout.</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin: 1rem 0;">
+                            Current Total: ${formatCurrency(total)}
+                        </p>
+                        <button class="btn btn-primary" onclick="loadPage('products')">
+                            <i class="fas fa-shopping-bag"></i>
+                            Continue Shopping
+                        </button>
+                    </div>
+                ` : `
                 <div class="checkout-container">
                     <div>
                         <div class="checkout-section">
                             <h3 class="section-title">Delivery Information</h3>
                             
                             <div class="form-group">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" class="form-input" placeholder="John Doe" id="fullName">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" class="form-input" placeholder="John Doe" id="fullName" required>
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">Email Address</label>
-                                <input type="email" class="form-input" placeholder="john@example.com" id="email">
+                                <label class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-input" placeholder="+960 333 6699" id="phone" required>
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">Phone Number</label>
-                                <input type="tel" class="form-input" placeholder="+960 333 6699" id="phone">
+                                <label class="form-label">Delivery Address *</label>
+                                <textarea class="form-input" placeholder="Street Address, Building, Floor, Apartment" id="address" rows="3" required></textarea>
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">Delivery Address</label>
-                                <input type="text" class="form-input" placeholder="Street Address" id="address">
-                            </div>
-                            
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                                <div class="form-group">
-                                    <label class="form-label">City</label>
-                                    <input type="text" class="form-input" placeholder="Male'" id="city">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Island</label>
-                                    <select class="form-input" id="island">
-                                        <option value="">Select Island</option>
-                                        <option value="male">Male'</option>
-                                        <option value="hulhumale">Hulhumale'</option>
-                                        <option value="vilimale">Vilimale'</option>
-                                        <option value="other">Other Island</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Delivery Time</label>
-                                <select class="form-input" id="deliveryTime">
-                                    <option value="">Select preferred time</option>
-                                    <option value="morning">Morning (9 AM - 12 PM)</option>
-                                    <option value="afternoon">Afternoon (1 PM - 4 PM)</option>
-                                    <option value="evening">Evening (5 PM - 8 PM)</option>
-                                </select>
+                                <label class="form-label">Delivery Instructions (Optional)</label>
+                                <textarea class="form-input" placeholder="e.g., Leave at door, Call before delivery" id="instructions" rows="2"></textarea>
                             </div>
                         </div>
                         
@@ -3142,35 +3583,22 @@
                             <h3 class="section-title">Payment Method</h3>
                             
                             <div class="payment-methods" id="paymentMethods">
-                                <div class="payment-method" data-method="cod">
-                                    <div class="payment-icon">
-                                        <i class="fas fa-money-bill-wave"></i>
-                                    </div>
-                                    <div class="payment-details">
-                                        <div class="payment-name">Cash on Delivery</div>
-                                        <div class="payment-desc">Pay when you receive your groceries</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="payment-method" data-method="bank">
+                                <div class="payment-method selected" data-method="bank_transfer">
                                     <div class="payment-icon">
                                         <i class="fas fa-university"></i>
                                     </div>
                                     <div class="payment-details">
                                         <div class="payment-name">Bank Transfer</div>
-                                        <div class="payment-desc">Transfer to our bank account</div>
+                                        <div class="payment-desc">Transfer to our bank account (Bank of Maldives)</div>
                                     </div>
                                 </div>
-                                
-                                <div class="payment-method" data-method="card">
-                                    <div class="payment-icon">
-                                        <i class="fas fa-credit-card"></i>
-                                    </div>
-                                    <div class="payment-details">
-                                        <div class="payment-name">Credit/Debit Card</div>
-                                        <div class="payment-desc">Pay securely with your card</div>
-                                    </div>
-                                </div>
+                            </div>
+                            
+                            <div style="background: var(--gray-100); border-radius: var(--radius-md); padding: 1rem; margin-top: 1rem;" id="bankTransferNote">
+                                <p style="color: var(--gray-700); font-size: 0.875rem;">
+                                    <i class="fas fa-info-circle" style="color: var(--primary);"></i>
+                                    After placing order, you'll receive bank transfer details. Please complete payment within 24 hours.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -3213,7 +3641,7 @@
                             
                             <button class="btn btn-primary checkout-btn" id="placeOrderBtn">
                                 <i class="fas fa-check-circle"></i>
-                                Place Order
+                                Place Order & Get Bank Details
                             </button>
                             
                             <button class="btn btn-outline mt-2" onclick="loadPage('cart')" style="width: 100%;">
@@ -3223,75 +3651,48 @@
                         </div>
                     </div>
                 </div>
+                `}
             `;
             
-            // Payment method selection
-            const paymentMethods = document.getElementById('paymentMethods');
-            const paymentOptions = paymentMethods.querySelectorAll('.payment-method');
+            document.getElementById('bankTransferNote').style.display = 'block';
             
-            // Set COD as default
-            paymentOptions[0].classList.add('selected');
-            
-            paymentOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    paymentOptions.forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
+            if (canCheckout) {
+                document.getElementById('placeOrderBtn').addEventListener('click', () => {
+                    const fullName = document.getElementById('fullName').value;
+                    const phone = document.getElementById('phone').value;
+                    const address = document.getElementById('address').value;
+                    const instructions = document.getElementById('instructions').value;
+                    
+                    if (!fullName || !phone || !address) {
+                        alert('Please fill in all required fields (marked with *)');
+                        return;
+                    }
+                    
+                    const order = {
+                        customer: { fullName, phone, address, instructions },
+                        items: cartItems.map(item => ({
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            quantity: item.quantity,
+                            image: item.image
+                        })),
+                        paymentMethod: 'bank_transfer',
+                        subtotal,
+                        shipping,
+                        tax,
+                        total,
+                        status: 'pending',
+                        paymentStatus: 'pending',
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    state.pendingOrder = order;
+                    
+                    const orderId = showBankTransferModal();
+                    order.orderId = orderId;
                 });
-            });
-            
-            // Place order button
-            document.getElementById('placeOrderBtn').addEventListener('click', () => {
-                const fullName = document.getElementById('fullName').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const address = document.getElementById('address').value;
-                const city = document.getElementById('city').value;
-                const island = document.getElementById('island').value;
-                const deliveryTime = document.getElementById('deliveryTime').value;
-                
-                if (!fullName || !email || !phone || !address || !city || !island || !deliveryTime) {
-                    alert('Please fill in all required fields');
-                    return;
-                }
-                
-                const selectedPayment = document.querySelector('.payment-method.selected').dataset.method;
-                
-                // Create order
-                const order = {
-                    customer: { fullName, email, phone, address, city, island, deliveryTime },
-                    items: cartItems,
-                    paymentMethod: selectedPayment,
-                    subtotal,
-                    shipping,
-                    tax,
-                    total,
-                    status: 'pending',
-                    createdAt: new Date().toISOString()
-                };
-                
-                state.pendingOrder = order;
-                
-                if (selectedPayment === 'bank') {
-                    // Show bank transfer modal
-                    showBankTransferModal();
-                } else {
-                    // Save to Firebase for other payment methods
-                    database.ref('orders').push(order)
-                        .then((ref) => {
-                            // Clear cart
-                            state.cart = {};
-                            localStorage.removeItem('cart');
-                            updateCartCount();
-                            
-                            // Redirect to confirmation
-                            state.orderDetails = { ...order, id: ref.key };
-                            loadPage('order-confirmation');
-                        })
-                        .catch((error) => {
-                            alert('Error placing order: ' + error.message);
-                        });
-                }
-            });
+            }
         }
 
         function renderOrderConfirmation() {
@@ -3309,22 +3710,22 @@
                     </div>
                     
                     <h1>Order Confirmed!</h1>
-                    <p>Thank you for your grocery order #${order.id.substring(0, 8).toUpperCase()}</p>
+                    <p>Thank you for your grocery order #${order.orderId || order.id.substring(0, 8).toUpperCase()}</p>
                     
                     <div class="checkout-section mt-3" style="max-width: 500px; margin: 0 auto;">
                         <div class="summary-row">
                             <span>Order Number</span>
-                            <span>${order.id.substring(0, 8).toUpperCase()}</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Delivery Time</span>
-                            <span>${order.customer.deliveryTime}</span>
+                            <span>${order.orderId || order.id.substring(0, 8).toUpperCase()}</span>
                         </div>
                         
                         <div class="summary-row">
                             <span>Payment Method</span>
-                            <span>${order.paymentMethod.toUpperCase()}</span>
+                            <span>Bank Transfer</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Payment Status</span>
+                            <span style="color: var(--warning);">Pending</span>
                         </div>
                         
                         <div class="summary-row total">
@@ -3333,10 +3734,18 @@
                         </div>
                     </div>
                     
-                    <p class="mt-3" style="color: var(--gray-600); max-width: 500px; margin: 0 auto;">
-                        We'll send you a confirmation email with delivery details. 
-                        Our delivery team will contact you before arrival.
-                    </p>
+                    <div style="background: var(--gray-100); border-radius: var(--radius-md); padding: 1.5rem; margin-top: 1.5rem; max-width: 500px;">
+                        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--dark);">
+                            <i class="fas fa-info-circle" style="color: var(--primary);"></i>
+                            Next Steps:
+                        </h3>
+                        <ol style="color: var(--gray-600); padding-left: 1.5rem; line-height: 1.6;">
+                            <li>Complete bank transfer using the provided details</li>
+                            <li>Upload payment receipt in the payment section</li>
+                            <li>We'll verify payment and process your order</li>
+                            <li>You'll receive delivery confirmation via phone</li>
+                        </ol>
+                    </div>
                     
                     <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center;">
                         <button class="btn btn-primary" onclick="loadPage('home')">
@@ -3344,9 +3753,9 @@
                             Back to Home
                         </button>
                         
-                        <button class="btn btn-outline" onclick="printOrder()">
-                            <i class="fas fa-print"></i>
-                            Print Receipt
+                        <button class="btn btn-outline" onclick="showBankTransferModal('${order.orderId}')">
+                            <i class="fas fa-university"></i>
+                            View Bank Details Again
                         </button>
                     </div>
                 </div>
@@ -3390,78 +3799,9 @@
                         <p>Check back next week for new deals</p>
                     </div>
                 `}
-                
-                <div style="background: linear-gradient(135deg, var(--warning) 0%, #f39c12 100%); border-radius: var(--radius-lg); padding: 1.5rem; color: white; margin-top: 3rem;">
-                    <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Fresh Deals Every Week</h2>
-                    <p style="opacity: 0.9;">New specials updated every Monday morning. Subscribe to our newsletter to stay updated!</p>
-                </div>
             `;
             
-            // Start countdown
             startCountdown();
-        }
-
-        function renderRecipesPage() {
-            mainContent.innerHTML = `
-                <div class="page-header">
-                    <h1>Fresh Recipes</h1>
-                    <p>Delicious recipes using our fresh ingredients</p>
-                </div>
-                
-                <div class="products-grid">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop" alt="Smoothie Bowl">
-                        </div>
-                        <div class="product-content">
-                            <h3 class="product-title">Berry Smoothie Bowl</h3>
-                            <p class="product-description">Fresh berries, banana, and yogurt</p>
-                            <div class="product-actions">
-                                <button class="btn btn-primary" style="width: 100%;">
-                                    <i class="fas fa-book-open"></i>
-                                    View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop" alt="Fresh Salad">
-                        </div>
-                        <div class="product-content">
-                            <h3 class="product-title">Mediterranean Salad</h3>
-                            <p class="product-description">Fresh veggies, feta, olive oil</p>
-                            <div class="product-actions">
-                                <button class="btn btn-primary" style="width: 100%;">
-                                    <i class="fas fa-book-open"></i>
-                                    View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="Healthy Meal">
-                        </div>
-                        <div class="product-content">
-                            <h3 class="product-title">Grilled Salmon</h3>
-                            <p class="product-description">With roasted vegetables</p>
-                            <div class="product-actions">
-                                <button class="btn btn-primary" style="width: 100%;">
-                                    <i class="fas fa-book-open"></i>
-                                    View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-4">
-                    <p style="color: var(--gray-600);">More recipes coming soon!</p>
-                </div>
-            `;
         }
 
         function renderAccountPage() {
@@ -3487,17 +3827,13 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" placeholder="Your email">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" placeholder="+960 333 6699">
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Delivery Preferences</label>
-                        <select class="form-input">
-                            <option>Standard Delivery (4-6 hours)</option>
-                            <option>Express Delivery (2 hours)</option>
-                            <option>Scheduled Delivery</option>
-                        </select>
+                        <label class="form-label">Default Delivery Address</label>
+                        <textarea class="form-input" placeholder="Your default address" rows="3"></textarea>
                     </div>
                     
                     <button class="btn btn-primary" style="width: 100%;">
@@ -3512,51 +3848,145 @@
             mainContent.innerHTML = `
                 <div class="page-header">
                     <h1>Contact Us</h1>
-                    <p>We're here to help with your grocery needs</p>
+                    <p>Get in touch with our team for any inquiries</p>
                 </div>
                 
-                <div class="checkout-section">
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
-                        <div style="text-align: center; padding: 1.5rem; background: var(--gray-100); border-radius: var(--radius-md);">
-                            <i class="fas fa-phone" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Call Us</h3>
-                            <p style="color: var(--gray-600);">+960 333 6699</p>
+                <div class="contact-grid">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
                         </div>
-                        
-                        <div style="text-align: center; padding: 1.5rem; background: var(--gray-100); border-radius: var(--radius-md);">
-                            <i class="fas fa-envelope" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Email Us</h3>
-                            <p style="color: var(--gray-600);">info@freshmart.com.mv</p>
+                        <h3 class="contact-card-title">Call Us</h3>
+                        <p class="contact-card-text">Speak directly with our customer service team</p>
+                        <a href="tel:+9607468757" class="contact-card-link">
+                            <i class="fas fa-phone"></i>
+                            +960 7468757
+                        </a>
+                    </div>
+                    
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 class="contact-card-title">Email Us</h3>
+                        <p class="contact-card-text">Send us an email for any questions or feedback</p>
+                        <a href="mailto:info@aleelatrade.com.mv" class="contact-card-link">
+                            <i class="fas fa-envelope"></i>
+                            info@aleelatrade.com.mv
+                        </a>
+                    </div>
+                    
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="contact-card-title">Visit Store</h3>
+                        <p class="contact-card-text">Come visit our physical store location</p>
+                        <button class="contact-card-link" onclick="showMapModal()" style="border: none; background: none; cursor: pointer;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            View Store Location
+                        </button>
+                    </div>
+                    
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="contact-card-title">Live Chat</h3>
+                        <p class="contact-card-text">Chat with our support team in real-time</p>
+                        <button class="contact-card-link" onclick="alert('Live chat service coming soon!')" style="border: none; background: none; cursor: pointer;">
+                            <i class="fas fa-comment-dots"></i>
+                            Start Chat
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Business Hours -->
+                <div class="business-hours">
+                    <h3 class="hours-title">Business Hours</h3>
+                    <div class="hours-grid">
+                        <div class="hours-row">
+                            <span class="hours-day">Monday - Friday</span>
+                            <span class="hours-time">7:00 AM - 11:00 PM</span>
+                        </div>
+                        <div class="hours-row">
+                            <span class="hours-day">Saturday</span>
+                            <span class="hours-time">7:00 AM - 11:00 PM</span>
+                        </div>
+                        <div class="hours-row">
+                            <span class="hours-day">Sunday</span>
+                            <span class="hours-time">7:00 AM - 11:00 PM</span>
+                        </div>
+                        <div class="hours-row">
+                            <span class="hours-day">Delivery Hours</span>
+                            <span class="hours-time">7:00 AM - 10:00 PM</span>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="checkout-section mt-3">
+                    <h3 class="section-title">Send Us a Message</h3>
                     
-                    <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--organic) 100%); border-radius: var(--radius-md); padding: 1.5rem; color: white; margin-bottom: 2rem;">
-                        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Store Hours</h3>
-                        <p>Open Daily: 7:00 AM - 11:00 PM</p>
-                        <p style="opacity: 0.9; font-size: 0.875rem;">Delivery available until 10:00 PM</p>
+                    <div class="form-group">
+                        <label class="form-label">Your Name *</label>
+                        <input type="text" class="form-input" placeholder="Full Name" id="contactName">
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Your Name</label>
-                        <input type="text" class="form-input" placeholder="John Doe">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" class="form-input" placeholder="your@email.com" id="contactEmail">
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" placeholder="john@example.com">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" placeholder="+960 7468757" id="contactPhone">
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Message</label>
-                        <textarea class="form-input" placeholder="How can we help you with your grocery needs?" rows="4" style="resize: vertical;"></textarea>
+                        <label class="form-label">Subject</label>
+                        <select class="form-input" id="contactSubject">
+                            <option value="">Select a subject</option>
+                            <option value="order">Order Inquiry</option>
+                            <option value="delivery">Delivery Issue</option>
+                            <option value="product">Product Question</option>
+                            <option value="feedback">Feedback</option>
+                            <option value="other">Other</option>
+                        </select>
                     </div>
                     
-                    <button class="btn btn-primary" style="width: 100%;">
+                    <div class="form-group">
+                        <label class="form-label">Message *</label>
+                        <textarea class="form-input" placeholder="How can we help you?" rows="5" id="contactMessage"></textarea>
+                    </div>
+                    
+                    <button class="btn btn-primary" style="width: 100%;" onclick="submitContactForm()">
                         <i class="fas fa-paper-plane"></i>
                         Send Message
                     </button>
                 </div>
             `;
+        }
+
+        function submitContactForm() {
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const phone = document.getElementById('contactPhone').value;
+            const subject = document.getElementById('contactSubject').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            if (!name || !email || !message) {
+                alert('Please fill in all required fields (Name, Email, Message)');
+                return;
+            }
+            
+            showNotification('Message sent successfully! We\'ll get back to you soon.');
+            
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactPhone').value = '';
+            document.getElementById('contactSubject').value = '';
+            document.getElementById('contactMessage').value = '';
         }
 
         // ===== UTILITY FUNCTIONS =====
@@ -3579,7 +4009,6 @@
         }
 
         function updateActiveNav() {
-            // Update mobile nav
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
                 if (link.dataset.page === state.currentPage) {
@@ -3587,7 +4016,6 @@
                 }
             });
             
-            // Update category buttons
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.dataset.category === state.currentCategory || 
@@ -3641,7 +4069,6 @@
             saveCart();
             updateCartCount();
             
-            // Show notification
             showNotification(`${product.name} added to cart`);
         }
 
@@ -3688,7 +4115,6 @@
         }
 
         function showNotification(message) {
-            // Create notification element
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
@@ -3708,12 +4134,10 @@
             
             document.body.appendChild(notification);
             
-            // Animate in
             setTimeout(() => {
                 notification.style.transform = 'translateX(0)';
             }, 10);
             
-            // Remove after 3 seconds
             setTimeout(() => {
                 notification.style.transform = 'translateX(120%)';
                 setTimeout(() => {
@@ -3733,6 +4157,13 @@
         window.loadPage = loadPage;
         window.printOrder = printOrder;
         window.showBankTransferModal = showBankTransferModal;
+        window.showMapModal = showMapModal;
+        window.getDirections = getDirections;
+        window.getDirectionsToStore = getDirectionsToStore;
+        window.showAboutUsModal = showAboutUsModal;
+        window.submitContactForm = submitContactForm;
+        window.toggleFavorite = toggleFavorite;
+        window.clearAllFavorites = clearAllFavorites;
     </script>
 </body>
 </html>
